@@ -45,7 +45,7 @@ pin: PA1
 pwm: True
 cycle_time: 0.010
 value: 0.01
-[output_pin light_pin]
+[output_pin light]
 #pin: nozzle_mcu: PB0 #PA10
 pin: !PC0
 pwm: True
@@ -82,11 +82,11 @@ gcode:
 
 [gcode_macro LIGHT_LED_ON]
 gcode:
-  SET_PIN PIN=light_pin VALUE=1
+  SET_PIN PIN=light VALUE=1
 
 [gcode_macro LIGHT_LED_OFF]
 gcode:
-  SET_PIN PIN=light_pin VALUE=0
+  SET_PIN PIN=light VALUE=0
 ```
 красный я оставил без изменений чтобы чтобы при ошибке привлечь ваше внимание. однако вы можете поменять яркость и на нем. 
 
