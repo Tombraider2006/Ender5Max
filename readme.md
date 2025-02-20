@@ -10,7 +10,12 @@
 
 после этого можно установить [хелпер скрипт](https://guilouz.github.io/Creality-Helper-Script-Wiki/helper-script/helper-script-installation/) и получить базовую функциональность клиппера.
 
-базовые файлы конфигурации [тут](/config/)  и что я об этом [думаю](/some_words.md)
+стоковые файлы конфигурации [тут](/config/)  и что я об этом [думаю](/some_words.md)
+
+
+исправления конфигурации.
+
+
 
 Если необходимо, можно докупить сразу с принтером камеру Nebula . [тут](https://aliexpress.ru/item/1005006159528565.html) или [тут](https://aliexpress.ru/item/1005006124602385.html)
 
