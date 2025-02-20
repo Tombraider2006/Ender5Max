@@ -30,17 +30,17 @@ max_z_accel: 300
  4. Лампочка состояния принтер, по отзывам, горит слишком ярко. Исправим это: ищем следующие разделы и меняем как написано тут. также исправляем логику подсветки стола которая была инвертирована.
 
  ```
-[output_pin green_pin]
+[output_pin _green_pin]
 pin: PA0
 pwm: True
 cycle_time: 0.010
 value: 0
-[output_pin red_pin]
+[output_pin _red_pin]
 pin: PC1
 pwm: True
 cycle_time: 0.010
 value: 0
-[output_pin yellow_pin]
+[output_pin _yellow_pin]
 pin: PA1
 pwm: True
 cycle_time: 0.010
@@ -58,27 +58,27 @@ value: 1.0
 ###YINZHI
 [gcode_macro RED_LED_ON]
 gcode:
-  SET_PIN PIN=red_pin VALUE=1
+  SET_PIN PIN=_red_pin VALUE=1
 
 [gcode_macro RED_LED_OFF]
 gcode:
-  SET_PIN PIN=red_pin VALUE=0
+  SET_PIN PIN=_red_pin VALUE=0
 
 [gcode_macro GREEN_LED_ON]
 gcode:
-  SET_PIN PIN=green_pin VALUE=0.02
+  SET_PIN PIN=_green_pin VALUE=0.02
 
 [gcode_macro GREEN_LED_OFF]
 gcode:
-  SET_PIN PIN=green_pin VALUE=0
+  SET_PIN PIN=_green_pin VALUE=0
 
 [gcode_macro YELLOW_LED_ON]
 gcode:
-  SET_PIN PIN=yellow_pin VALUE=0.01
+  SET_PIN PIN=_yellow_pin VALUE=0.01
 
 [gcode_macro YELLOW_LED_OFF]
 gcode:
-  SET_PIN PIN=yellow_pin VALUE=0
+  SET_PIN PIN=_yellow_pin VALUE=0
 
 [gcode_macro LIGHT_LED_ON]
 gcode:
@@ -90,3 +90,4 @@ gcode:
 ```
 красный я оставил без изменений чтобы чтобы при ошибке привлечь ваше внимание. однако вы можете поменять яркость и на нем. 
 
+посмотрев на то как это выглядит в панели я подумал что  элементы управления лампами лишние и решил их скрыть. поэтому поставил знак `_` перед именами пинов ламп. если вы хотите оставить их то просто уберите `_` перед названиями.
