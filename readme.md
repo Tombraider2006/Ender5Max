@@ -6,7 +6,7 @@
 
 с паролем `creality_2025`
 
-Gосле этого можно установить [**хелпер скрипт**](https://guilouz.github.io/Creality-Helper-Script-Wiki/helper-script/helper-script-installation/) и получить базовую функциональность клиппера.
+После этого можно установить [**хелпер скрипт**](https://guilouz.github.io/Creality-Helper-Script-Wiki/helper-script/helper-script-installation/) и получить базовую функциональность клиппера.
 
 рекомендуемые пункты меню 1, 2, 4, 5, 6. если у вас есть видеокамера то 9 и 10.
 
