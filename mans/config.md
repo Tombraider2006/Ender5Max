@@ -82,7 +82,7 @@ gcode:
 
 [gcode_macro LIGHT_LED_ON]
 gcode:
-  SET_PIN PIN=light VALUE=1
+  SET_PIN PIN=light_pin VALUE=1
 
 [gcode_macro LIGHT_LED_OFF]
 gcode:
