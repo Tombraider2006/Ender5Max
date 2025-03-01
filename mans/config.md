@@ -93,14 +93,14 @@ gcode:
  6. Решив сделать принтер чуть тише я изменил логику работы кулера материнской платы, теперь он срабатывает при достижении платой 47 градусов и выключается при 43 градусах.
 
 ```
-#[temperature_sensor mcu_temp]
+#[temperature_sensor mcu_temp] # закоментируйте этот раздел
 #sensor_type: temperature_mcu
 #min_temp: 0
 #max_temp: 100
 
 
 #############FAN OLD CONFIG
-#[output_pin MainBoardFan]
+#[output_pin MainBoardFan] # закоментируйте этот раздел
 #pin: !PB1
 
 [temperature_fan MCU_fan]
