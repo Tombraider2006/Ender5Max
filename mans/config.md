@@ -52,7 +52,7 @@ pwm: True
 cycle_time: 0.010
 value: 1.0
  ```
-чтобы алгоритмы отрабатывали правильно нам необзодимо также исправить файл `gcode_macro.cfg` заходим туда и находим следующие разделы и меняем их на представленные ниже
+ 5. Чтобы алгоритмы отрабатывали правильно нам необзодимо также исправить файл `gcode_macro.cfg` заходим туда и находим следующие разделы и меняем их на представленные ниже
 
 ```
 ###YINZHI
@@ -89,4 +89,35 @@ gcode:
   SET_PIN PIN=light_pin VALUE=0
 ```
 красный я оставил без изменений чтобы чтобы при ошибке привлечь ваше внимание. однако вы можете поменять яркость и на нем. 
+
+ 6. Решив сделать принтер чуть тише я изменил логику работы кулера материнской платы, теперь он срабатывает при достижении платой 47 градусов и выключается при 43 градусах.
+
+```
+#[temperature_sensor mcu_temp]
+#sensor_type: temperature_mcu
+#min_temp: 0
+#max_temp: 100
+
+
+#############FAN OLD CONFIG
+#[output_pin MainBoardFan]
+#pin: !PB1
+
+[temperature_fan MCU_fan]
+pin: PB1
+cycle_time: 0.0100
+kick_start_time: 0.5
+hardware_pwm: false
+max_power: 1
+shutdown_speed: 0
+sensor_type: temperature_mcu
+min_temp: 0
+max_temp: 100
+control: watermark
+max_delta: 2
+target_temp: 45.0
+max_speed: 1.0
+min_speed: 0.0
+```
+в данном примере вы видите что вам надо закоментировать и что добавить, чтобы получилось вот так:
 
