@@ -2,7 +2,7 @@
 <h1>ENDER 5 MAX</h1>
 
 
-На данный момент получить  `root` можно с помощью [**модифицированной прошивки**](https://disk.yandex.ru/d/h7L09pwSWdJ1uA) 
+На данный момент получить  `root` можно с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware) 
 
 с паролем `creality_2025`
 
