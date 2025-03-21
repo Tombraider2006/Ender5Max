@@ -90,35 +90,17 @@ gcode:
 ```
 красный я оставил без изменений чтобы чтобы при ошибке привлечь ваше внимание. однако вы можете поменять яркость и на нем. 
 
- 6. Решив сделать принтер чуть тише я изменил логику работы кулера материнской платы, теперь он срабатывает при достижении платой 47 градусов и выключается при 43 градусах.
-
+ 6. Решив сделать принтер чуть тише я изменил логику работы кулера материнской платы, теперь он срабатывает при включении мотора икса. 
 ```
-#[temperature_sensor mcu_temp] # закоментируйте этот раздел
-#sensor_type: temperature_mcu
-#min_temp: 0
-#max_temp: 100
-
-
 #############FAN OLD CONFIG
 #[output_pin MainBoardFan] # закоментируйте этот раздел
 #pin: !PB1
 
-[temperature_fan MCU_fan]
+[controller_fan MCU_fan] # включаем обдув после включения драйверов
 pin: PB1
-cycle_time: 0.0100
-kick_start_time: 0.5
-hardware_pwm: false
-max_power: 1
-shutdown_speed: 0
-sensor_type: temperature_mcu
-min_temp: 0
-max_temp: 100
-control: watermark
-max_delta: 2
-target_temp: 45.0
-max_speed: 1.0
-min_speed: 0.0
+max_power: 1.0
+fan_speed: 1
+kick_start_time: 0
+stepper: stepper_x
 ```
-в данном примере вы видите что вам надо закоментировать и что добавить, чтобы получилось вот так:
-
-![](/images/mcu_fan.png)
+в данном примере вы видите что вам надо закоментировать и что добавить.
