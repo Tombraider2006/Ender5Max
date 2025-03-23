@@ -16,7 +16,11 @@
 
 как может выглядеть интерфейс после установки.
 
-![](/images/ender5max.mp4)
+
+
+
+https://github.com/user-attachments/assets/1851a861-b29d-4a3b-ac2f-7861f6cc0bae
+
 
 Выложен для ознакомления и обсуждения.
 ![](/images/helper.png)
