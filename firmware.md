@@ -4,7 +4,7 @@
 <h2>Прошивки</h2>
 
 
-На данный момент получить  `root` можно с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware) 
+На данный момент получить  `root` можно с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware/releases/latest) 
 
 с паролем `creality_2025` 
 
