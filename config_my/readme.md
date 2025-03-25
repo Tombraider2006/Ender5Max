@@ -24,3 +24,11 @@ https://github.com/user-attachments/assets/1851a861-b29d-4a3b-ac2f-7861f6cc0bae
 
 Выложен для ознакомления и обсуждения.
 ![](/images/helper.png)
+
+Внимание, для последних релизов необходим модуль virtual_pin. Для этого достаточно зайти по ssh и выполнить следующие команды;
+
+```
+cd /usr/share/klipper/klippy/extras
+wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/K1/main/random/virtual_pins.py
+
+```
