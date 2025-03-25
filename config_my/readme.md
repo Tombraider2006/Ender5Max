@@ -32,3 +32,17 @@ cd /usr/share/klipper/klippy/extras
 wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/K1/main/random/virtual_pins.py
 
 ```
+**Внимание!** это удалит текущие файлы printer.cfg acode_macro.cfg и moonraker.conf из каталога. убедитесь что вы сделали бекап файлов на всякий случай. Делать это только после установки хелпер скрипта и тех пунктов в нем что указано выше!
+
+загрузить последний релиз можно так: 
+
+```
+cd /usr/data/printer_data/config
+rm printer.cfg
+rm gcode_macro.cfg
+rm moonraker.conf
+wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/printer.cfg
+wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/gcode_macro.cfg
+wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/moonraker.conf
+
+```
