@@ -48,3 +48,5 @@ wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/End
 wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/moonraker.conf
 
 ```
+
+После этого перезагрузите принтер. или сервисы klipper и moonraker.
