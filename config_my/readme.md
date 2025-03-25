@@ -49,7 +49,7 @@ wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/End
 
 ```
 
-После этого перезагрузите принтер. или сервисы klipper и moonraker.
+После этого перезагрузите принтер. или сервисы klipper и moonraker. не забудьте перекалибровать стол! также желательно сделать `bedpid` и `pid_hotend` найти и нажать во вкладке макросы
 
 
 Что сделано:
