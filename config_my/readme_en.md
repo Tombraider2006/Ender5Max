@@ -39,3 +39,5 @@ wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/End
 wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/moonraker.conf
 
 ```
+
+after that restart klipper and moonraker
