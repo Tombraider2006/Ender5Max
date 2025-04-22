@@ -31,7 +31,8 @@
 
 [**Магазин запчастей креалити на Ozon**](https://www.ozon.ru/seller/krealiti-3d-427462/?miniapp=seller_427462)
 
+## Разное полезное
 
-Группа пользователей принтера телеграм [тут](https://t.me/Ender_5_Max_Ru)
+[**Группа пользователей принтера телеграм**](https://t.me/Ender_5_Max_Ru)
 
 [**Мини обзор на принтер ENDER 5 MAX**](/review.md)
