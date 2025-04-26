@@ -21,7 +21,7 @@
 
 [**Установка прошивки Simple Af на Ender 5 Max**](/mans/simpleaf.md) на примере датчика картографер.  
 
-При прошивке SimpleAF понадобится [картографер](https://aliexpress.ru/item/1005006733253744.html)
+При прошивке SimpleAF понадобится [картографер](https://aliexpress.ru/item/1005006733253744.html?sku_id=12000038123192420)
 
 ## О запчастях.
 
