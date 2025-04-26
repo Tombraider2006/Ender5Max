@@ -21,6 +21,7 @@
 
 [**Инструкции по прошивке датчика**](https://pellcorp.github.io/creality-wiki/cartographer_flashing/#flashing-k1-firmware-via-dfu-mode)
 
+[**Инструкции по прошивке датчика в среде windows**](/mans/dfu.md)
 
 
 ### Подготовка и прошивка.
