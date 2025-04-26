@@ -1,0 +1,86 @@
+{
+  "default_macros": {
+    "belts_shaper_calibration": "BELTS_SHAPER_CALIBRATION",
+    "cooldown": "TURN_OFF_HEATERS",
+    "excitate_axis_at_frequency": "EXCITATE_AXIS_AT_FREQUENCY",
+    "extrude": "_GUPPYSCREEN_EXTRUDE EXTRUDER_TEMP={} EXTRUDE_LEN={} SPEED={}",
+    "load_filament": "_GUPPYSCREEN_LOAD EXTRUDER_TEMP={}",
+    "retract": "_GUPPYSCREEN_RETRACT EXTRUDER_TEMP={} EXTRUDE_LEN={} SPEED={}",
+    "unload_filament": "_GUPPYSCREEN_UNLOAD EXTRUDER_TEMP={}"
+  },
+  "display_brightness": 90,
+  "display_rotate": 0,
+  "display_sleep_sec": 600,
+  "factory_reset_script": "/etc/init.d/S58factoryreset",
+  "fans": [
+    {
+      "display_name": "Toolhead",
+      "id": "fan_generic part"
+    },
+    {
+      "display_name": "Auxiliary",
+      "id": "fan_generic auxiliary"
+    },
+    {
+      "display_name": "Chamber",
+      "id": "fan_generic chamber"
+    }
+  ],
+  "guppy_restart_cmd": "/etc/init.d/S99guppyscreen restart",
+  "invert_z_icon": false,
+  "leds": [
+    {
+      "display_name": "LED",
+      "id": "output_pin LED",
+      "pwm": true
+    },
+    {
+      "display_name": "Red",
+      "id": "output_pin red_pin",
+      "pwm": false
+    },
+    {
+      "display_name": "Green",
+      "id": "output_pin green_pin",
+      "pwm": false
+    },
+    {
+      "display_name": "Yellow",
+      "id": "output_pin yellow_pin",
+      "pwm": false
+    },
+    {
+      "display_name": "Light",
+      "id": "output_pin light_pin",
+      "pwm": false
+    }
+  ],
+  "log_level": "info",
+  "monitored_sensors": [
+    {
+      "color": "red",
+      "controllable": true,
+      "display_name": "Extruder",
+      "id": "extruder"
+    },
+    {
+      "color": "purple",
+      "controllable": true,
+      "display_name": "Bed",
+      "id": "heater_bed"
+    },
+    {
+      "color": "blue",
+      "controllable": false,
+      "display_name": "Chamber",
+      "id": "temperature_sensor chamber_temp"
+    }
+  ],
+  "moonraker_api_key": false,
+  "moonraker_host": "127.0.0.1",
+  "moonraker_port": 7125,
+  "prompt_emergency_stop": true,
+  "theme": "green",
+  "thumbnail_path": "/usr/data/printer_data/thumbnails",
+  "wpa_supplicant": "/var/run/wpa_supplicant"
+}
