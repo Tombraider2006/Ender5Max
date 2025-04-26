@@ -208,7 +208,17 @@ wget -P /usr/data/guppyscreen/ https://raw.githubusercontent.com/Tombraider2006/
 chmod 644 guppyscreen.json
 
 ```
-Перезагружаемся и проводим калибровку.
+Пояснения к командам:
+
+`cd /usr/data/guppyscreen/` переходим в нужный каталог.
+
+`mv guppyscreen.json guppyscreen.json.bak` делаем бекап нашего файла.
+
+`wget -P /usr/data/guppyscreen/ и тд` скачиваем в каталог файл преднастроенный.
+
+`chmod 644 guppyscreen.json` выдаем права на чтение и запись.
+
+**Перезагружаемся и проводим калибровку экрана.**
 </details>
 
 ![](/images/door_unlock_screen.png)
