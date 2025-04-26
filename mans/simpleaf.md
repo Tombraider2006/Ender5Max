@@ -180,6 +180,8 @@ END_PRINT
 
 ### вы купили зашивку корпуса и теперь провода мешают открывать дверцу.
 
+![](/images/door_lock_screen.png)
+
 Для этого надо поменять ориентацию в файле /usr/data/guppyscreen/guppyscreen.json на 0 и убрать данные о калибровке. 
 
 Перед внесением измененний сделайте резервную копию своего файла!
@@ -195,13 +197,18 @@ END_PRINT
 
 </details>
 
-<details><summary>Вариант №2 простой.</summary>
+<details><summary>Вариант №2 простой</summary>
 
 В консоль ssh копируем следующие команды. 
 
 ```
 cd /usr/data/guppyscreen/
 mv guppyscreen.json guppyscreen.json.bak
-git
+wget -P /usr/data/guppyscreen/ https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/guppyscreen.json
+chmod 644 guppyscreen.json
 
 ```
+Перезагружаемся и проводим калибровку.
+</details>
+
+![](/images/door_unlock_screen.png)
