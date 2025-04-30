@@ -223,3 +223,6 @@ chmod 644 guppyscreen.json
 </details>
 
 ![](/images/door_unlock_screen.png)
+
+
+Вы можете обратиться ко мне за [**консультацией**](/kurs.md). и я помогу с установкой програмного обеспечения.
