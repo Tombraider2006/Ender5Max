@@ -27,7 +27,7 @@ git clone --depth 1 https://github.com/Guilouz/Creality-Helper-Script.git /usr/d
 sh /usr/data/helper-script/helper.sh
 ```
 
-рекомендуемые пункты меню 1, 2, 4, 5, 6. если у вас есть видеокамера то 9.
+рекомендуемые пункты меню 1, 2, 4, 5, 6, 7. если у вас есть видеокамера то 9.
 
 получится должно как то так:
 
