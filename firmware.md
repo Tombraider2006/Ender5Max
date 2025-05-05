@@ -170,6 +170,13 @@ M104 S0
 
 ![](/images/start_code.png)
 
+```
+SET_RETRACTION RETRACT_LENGTH=[retraction_length] RETRACT_SPEED=[retraction_speed] UNRETRACT_EXTRA_LENGTH=[retract_restart_extra] UNRETRACT_SPEED=[deretraction_speed]
+RESPOND TYPE=command MSG="Retraction length set to [retraction_length]mm" 
+RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_speed]mm/c"
+
+```
+
 2. поставим галку тут
 
 ![](/images/orca1.png)
