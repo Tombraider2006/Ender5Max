@@ -12,7 +12,7 @@
 Если вы хотите повторить то сначала необходимо 
 
 1. установить [хелпер скрипт](https://guilouz.github.io/Creality-Helper-Script-Wiki/helper-script/helper-script-installation/)
-2. установить пункты те что отмечены зелеными галочками. 
+2. установить пункты 1 2 4 5 6 7 
 
 3. после этого скачать файлы конфигурационные и заменить свои на мои. 
 
@@ -29,29 +29,6 @@ https://github.com/user-attachments/assets/1851a861-b29d-4a3b-ac2f-7861f6cc0bae
 Выложен для ознакомления и обсуждения.
 ![](/images/helper.png)
 
-Внимание, для последних релизов необходим модуль virtual_pin. Для этого достаточно зайти по ssh и выполнить следующие команды;
-
-```
-cd /usr/share/klipper/klippy/extras
-wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/K1/main/random/virtual_pins.py
-
-```
-**Внимание!** это удалит текущие файлы printer.cfg gcode_macro.cfg и moonraker.conf из каталога. убедитесь что вы сделали бекап файлов на всякий случай. Делать это только после установки хелпер скрипта и тех пунктов в нем что указано выше!
-
-загрузить последний релиз можно так: **УСТАРЕЛО!!!**
-
-```
-cd /usr/data/printer_data/config
-rm printer.cfg
-rm gcode_macro.cfg
-rm moonraker.conf
-wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/printer.cfg
-wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/gcode_macro.cfg
-wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/config_my/moonraker.conf
-
-```
-
-После этого перезагрузите принтер. или сервисы klipper и moonraker. не забудьте перекалибровать стол! также желательно сделать `bedpid` и `pid_hotend` найти и нажать во вкладке макросы
 
 
 Что сделано:
@@ -65,7 +42,6 @@ wget --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/End
     * непонятные пины
 5. исправлены макросы кулера обдува.
 6. исправлена логика включения подсветки при старте принтера и отображения в веб панели состояния подсветки.
-7. добавлена сущность "Bed Warp Stabilisation" для дальнейшего использования в стартовом макросе для паузы перед сьемом карты стола после нагрева.
 8. Добавлен `firmware retraction` как прописать его в слайсер [**смотри тут**](/firmware.md)
 9. Добавлены и исправлены макросы `bedpid` `pid_hotend`
 10. Добавлен  `wait_temp` макрос управляющий охлаждением после выключения нагрева хотенда
