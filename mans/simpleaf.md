@@ -72,7 +72,7 @@ sync
 ### Запускаем установщик
 
 ```
-/usr/data/pellcorp/k1/installer.sh --install cartotouch --mount Mount SimplyHexed
+/usr/data/pellcorp/k1/installer.sh --install cartotouch --mount SimplyHexed
 
 ```
 
