@@ -58,3 +58,28 @@ PID_CALIBRATE HEATER=extruder TARGET=250
 ### P.S. 
 
 Если у вас установлена прошивка Simple AF то необходимо отклалибровать ваш датчик вихревых токов заново.
+
+### P.P.S
+
+Информация для перфекционистов. 
+
+Если вы решили оставить термистор от Хотенда К2 и хотите правильно вписать тип термистора то вам необходимо следующее:
+
+Открыть файл `printer.cfg`
+
+Перед разделом `[extruder]` вставляем секцию:
+
+```
+[thermistor my_thermistor]
+temperature1:25
+resistance1:260000
+temperature2:220
+resistance2:738
+temperature3:350
+resistance3:98
+```
+в разделе `[extruder]` ищем параметр `sensor_type` и меняем эту строку на:
+
+```
+sensor_type: my_thermistor
+```
