@@ -278,21 +278,6 @@ value: 1.0
 заменяем на:
 
 ```
-[heater_fan nozzle_fan]
-pin: !nozzle_mcu: PB3
-max_power: 1.0
-shutdown_speed: 0
-cycle_time: 0.1
-hardware_pwm: False
-kick_start_time: 0.100
-off_below: 0.0
-heater: extruder
-fan_speed: 1.0
-heater_temp: 60.0
-[output_pin en_nozzle_fan]
-pin: nozzle_mcu: PB7
-pwm: False
-value: 1.0
 
 [multi_pin part_fans]
 pins:!nozzle_mcu:PB15,!nozzle_mcu:PA9
