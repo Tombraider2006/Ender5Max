@@ -85,9 +85,9 @@ sh /usr/data/helper-script/helper.sh
 ```
 [firmware_retraction]
 retract_length: 0.45 # безопасное значение для того пластика которым чаще всего печатаете.
-retract_speed: 40
+retract_speed: 30
 unretract_extra_length: 0
-unretract_speed: 40
+unretract_speed: 30
 
 [gcode_shell_command beep]
 command: beep
