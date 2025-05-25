@@ -246,22 +246,6 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 В файле `printer.cfg` находим разделы и удаляем.
 
 ```
-[heater_fan nozzle_fan]
-pin: !nozzle_mcu: PB3
-max_power: 1.0
-shutdown_speed: 0
-cycle_time: 0.1
-hardware_pwm: False
-kick_start_time: 0.100
-off_below: 0.0
-heater: extruder
-fan_speed: 1.0
-heater_temp: 60.0
-[output_pin en_nozzle_fan]
-pin: nozzle_mcu: PB7
-pwm: False
-value: 1.0
-
 ###喷头前面风扇
 [output_pin fan0]
 pin: !nozzle_mcu:PB15
