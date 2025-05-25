@@ -60,11 +60,16 @@ git clone --depth 1 https://github.com/Guilouz/Creality-Helper-Script.git /usr/d
 sh /usr/data/helper-script/helper.sh
 ```
 
-рекомендуемые пункты меню 1, 2, 4, 5, 6, 7. если у вас есть видеокамера то 9.
+пункт 1 install
 
-получится должно как то так:
 
-![](/images/helper.png)
+![](/images/helper_script.jpg)
+
+рекомендуемые пункты меню 1, 2, 4, 5, 10. если у вас есть видеокамера то 16.
+
+
+
+На данный момент идет перестройка пунктов и скриптов.. поэтому сверяйтесь в [**Группе пользователей принтера в телеграм**](https://t.me/Ender_5_Max_Ru)
 
 
 через  браузер теперь мы можем зайти на наш принтер в расширенную вебпанель с доступом к файлам конфигурации и расширенным настройкам. Не забываем указать порт `http://Ваш_ip:4408` если вы установили Fluid и `http://Ваш_ip:4409`  если Mainsail
@@ -235,3 +240,183 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 Вполне возможно что через некоторое время ситуация измениться.  
 
 Если вы захотите использовать guppyscreen в SimpleAF то необходимо [повернуть экран на 90 градусов.](https://github.com/Tombraider2006/Ender5Max/blob/main/mans/simpleaf.md#%D0%B2%D1%8B-%D0%BA%D1%83%D0%BF%D0%B8%D0%BB%D0%B8-%D0%B7%D0%B0%D1%88%D0%B8%D0%B2%D0%BA%D1%83-%D0%BA%D0%BE%D1%80%D0%BF%D1%83%D1%81%D0%B0-%D0%B8-%D1%82%D0%B5%D0%BF%D0%B5%D1%80%D1%8C-%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%B0-%D0%BC%D0%B5%D1%88%D0%B0%D1%8E%D1%82-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D0%B2%D0%B0%D1%82%D1%8C-%D0%B4%D0%B2%D0%B5%D1%80%D1%86%D1%83) вот [**модель**](/mans/Ender5MaxTiltedScreenMount.stl) чтобы закрепить экран в горизонтальном положении. 
+
+### Если получаем ошибку 2069
+
+В файле `printer.cfg` находим разделы и удаляем.
+
+```
+[heater_fan nozzle_fan]
+pin: !nozzle_mcu: PB3
+max_power: 1.0
+shutdown_speed: 0
+cycle_time: 0.1
+hardware_pwm: False
+kick_start_time: 0.100
+off_below: 0.0
+heater: extruder
+fan_speed: 1.0
+heater_temp: 60.0
+[output_pin en_nozzle_fan]
+pin: nozzle_mcu: PB7
+pwm: False
+value: 1.0
+
+###喷头前面风扇
+[output_pin fan0]
+pin: !nozzle_mcu:PB15
+pwm: True
+cycle_time: 0.01
+hardware_pwm: false
+value: 0.00
+scale: 255
+shutdown_value: 0.0
+[output_pin en_fan0]
+pin: nozzle_mcu: PB6
+pwm: False
+value: 1.0
+
+###喷头后面风扇
+[output_pin fan1]
+pin: !nozzle_mcu:PA9
+pwm: True
+cycle_time: 0.01
+hardware_pwm: false
+value: 0.00
+scale: 255
+shutdown_value: 0.0
+[output_pin en_fan1]
+pin: nozzle_mcu: PB9
+pwm: False
+value: 1.0
+
+```
+заменяем на:
+
+```
+[heater_fan nozzle_fan]
+pin: !nozzle_mcu: PB3
+max_power: 1.0
+shutdown_speed: 0
+cycle_time: 0.1
+hardware_pwm: False
+kick_start_time: 0.100
+off_below: 0.0
+heater: extruder
+fan_speed: 1.0
+heater_temp: 60.0
+[output_pin en_nozzle_fan]
+pin: nozzle_mcu: PB7
+pwm: False
+value: 1.0
+
+[multi_pin part_fans]
+pins:!nozzle_mcu:PB15,!nozzle_mcu:PA9
+
+[multi_pin en_part_fans]
+pins:nozzle_mcu:PB6,nozzle_mcu:PB9
+
+[fan_generic part]
+pin: multi_pin:part_fans
+enable_pin: multi_pin:en_part_fans
+cycle_time: 0.0100
+hardware_pwm: false
+```
+
+в файле `gcode_macro.cfg` ищем разделы и удаляем:
+
+
+```
+[gcode_macro M106]
+gcode:
+  {% set fan = 0 %}
+  {% set value = 255 %}
+  {% if params.S is defined %}
+    {% set tmp = params.S|int %}
+    {% if tmp <= 255 %}
+      {% set value = tmp %}
+    {% endif %}
+  {% endif %}
+  {% if params.P is defined %}
+    {% set value = (255 - printer["gcode_macro PRINTER_PARAM"].fan1_min) / 255 * tmp %}
+    {% set value = printer["gcode_macro PRINTER_PARAM"].fan1_min + value %}
+    {% if value >= 255 %}
+      {% set value = 255 %}
+    {% endif %}
+    SET_PIN PIN=fan1 VALUE={value}
+
+    {% set value = (255 - printer["gcode_macro PRINTER_PARAM"].fan0_min) / 255 * tmp %}
+    {% set value = printer["gcode_macro PRINTER_PARAM"].fan0_min + value %}
+    {% if value >= 255 %}
+      {% set value = 255 %}
+    {% endif %}
+    SET_PIN PIN=fan0 VALUE={value}
+  {% else %}
+    {% set value = (255 - printer["gcode_macro PRINTER_PARAM"].fan1_min) / 255 * tmp %}
+    {% set value = printer["gcode_macro PRINTER_PARAM"].fan1_min + value %}
+    {% if value >= 255 %}
+      {% set value = 255 %}
+    {% endif %}
+    SET_PIN PIN=fan1 VALUE={value}
+
+    {% set value = (255 - printer["gcode_macro PRINTER_PARAM"].fan0_min) / 255 * tmp %}
+    {% set value = printer["gcode_macro PRINTER_PARAM"].fan0_min + value %}
+    {% if value >= 255 %}
+      {% set value = 255 %}
+    {% endif %}
+    SET_PIN PIN=fan0 VALUE={value}
+
+  {% endif %}
+  {% if tmp < 1 %}
+    {% set value = tmp %}
+    SET_PIN PIN=fan0 VALUE={value}
+    SET_PIN PIN=fan1 VALUE={value}
+  {% endif %}
+
+
+[gcode_macro M107]
+gcode:
+  {% if params.P is defined %}
+    SET_PIN PIN=fan0 VALUE=0
+    SET_PIN PIN=fan1 VALUE=0
+  {% else %}
+    SET_PIN PIN=fan0 VALUE=0
+    SET_PIN PIN=fan1 VALUE=0
+  {% endif %}
+
+```
+заменяем на:
+
+```
+[gcode_macro M106]
+description: Set Fan Speed. P0 for part
+gcode:
+  {% set fan_id = params.P|default(0)|int %}
+  {% if fan_id == 0 %}
+    {% set speed_param = params.S|default(255)|int %}
+    {% if speed_param > 0 %}
+      {% set speed = (speed_param|float / 255) %}
+    {% else %}
+      {% set speed = 0 %}
+    {% endif %}
+    SET_FAN_SPEED FAN=part SPEED={speed}
+  {% endif %}
+
+[gcode_macro M107]
+description: Set Fan Off. P0 for part
+gcode:
+  SET_FAN_SPEED FAN=part SPEED=0
+
+
+[gcode_macro TURN_OFF_FANS]
+description: Stop chamber, auxiliary and part fan
+gcode:
+    SET_FAN_SPEED FAN=part SPEED=0
+
+
+[gcode_macro TURN_ON_FANS]
+description: Turn on chamber, auxiliary and part fan
+gcode:
+    SET_FAN_SPEED FAN=part SPEED=1
+
+```
