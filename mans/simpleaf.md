@@ -29,7 +29,10 @@
 
 | Модель       | Тип             | Ссылка                                                                 | Примечания                          |
 |--------------|-----------------|-----------------------------------------------------------------------|-------------------------------------|
-| SimplyHexed  | Прямой угол     | [Printables](https://www.printables.com/model/1209230-ender-5-max-simply-hexed)                              | Только для Ender 5 Max              |
+| SimplyHexed  | Прямой угол 90    | [Printables](https://www.printables.com/model/1209230-ender-5-max-simply-hexed)                              | Только для Ender 5 Max              |
+
+
+Если меняли хотенд на к2 то необходим [корпус обдува уменьшенный по высоте на 2 мм](/files/front_cover_carto.stl) 
 
 ### Крепление экрана
 
