@@ -280,30 +280,22 @@ variable_custom_park_dz: 380.0 # положение стола после печ
 [gcode_macro _CLIENT_VARIABLE]
 variable_park_at_cancel: True # не трогаем
 variable_use_custom_pos: True # не трогаем
-variable_custom_park_dz: 380.0 # позиция по Z при  CANCEL_PRINT и END_PRINT
-variable_park_at_cancel_x: 396 # позиция по X при  CANCEL_PRINT и END_PRINT
-variable_park_at_cancel_y: 391 # позиция по Y при  CANCEL_PRINT и END_PRINT
-variable_cancel_retract: 7.0 # ретракт при CANCEL_PRINT и END_PRINT
-# позиция при  PAUSE / M600 / FILAMENT RUNOUT
-variable_custom_park_x: 300 # позиция по X  при PAUSE / M600 / FILAMENT RUNOUT 
-variable_custom_park_y: 9 # позиция по Y  при PAUSE / M600 / FILAMENT RUNOUT 
-# Ретракты по умолчанию:
-variable_retract: 1.0
-# скорость ретракта в mm/s
-variable_speed_retract: 35.0
-variable_unretract: 1.0
-# unretract speed in mm/s
-variable_speed_unretract: 35.0
-# z move speed in mm/s
-variable_speed_hop: 15.0
-# move speed in mm/s
-variable_speed_move: 100.0
-# do not change this, this handles cancel print
-variable_user_cancel_macro: "_ON_CANCEL"
-# do not change this, this handles resume custom hook
-variable_user_resume_macro: "_ON_RESUME"
-# do not change this, this handles pause custom code
-variable_user_pause_macro: "_ON_PAUSE"
+variable_custom_park_dz: 380.0 # позиция по Z при отмене или завершении печати
+variable_park_at_cancel_x: 396 # позиция по X при отмене или завершении печати
+variable_park_at_cancel_y: 391 # позиция по Y при отмене или завершении печати
+variable_cancel_retract: 7.0 # втягивание филамента при отмене или завершении печати
+variable_custom_park_x: 300 # позиция по X при паузе, смене филамента или его окончании
+variable_custom_park_y: 9 # позиция по Y при паузе, смене филамента или его окончании
+variable_retract: 1.0 # значения ретракта по умолчанию
+variable_speed_retract: 35.0 # скорость ретракта в мм/с
+variable_unretract: 1.0 # скорость возврата филамента в мм/с
+variable_speed_unretract: 35.0 # скорость возврата подачи филамента в мм/с
+variable_speed_hop: 15.0 # скорость движения по оси Z в мм/с
+variable_speed_move: 100.0 # скорость перемещения в мм/с
+variable_user_cancel_macro: "_ON_CANCEL" # не изменять — отвечает за отмену печати
+variable_user_resume_macro: "_ON_RESUME" # не изменять — отвечает за возобновление после паузы
+variable_user_pause_macro: "_ON_PAUSE" # не изменять — отвечает за выполнение пользовательского кода при паузе
+
 ```
 
 если не хочется ждать стабилизации температуры перед печатью ставим 0 в следующем макросе:
