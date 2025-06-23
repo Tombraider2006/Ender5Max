@@ -305,3 +305,11 @@ variable_user_resume_macro: "_ON_RESUME"
 # do not change this, this handles pause custom code
 variable_user_pause_macro: "_ON_PAUSE"
 ```
+
+если не хочется ждать стабилизации температуры перед печатью ставим 0 в следующем макросе:
+
+```
+[output_pin Bed_Warp_Stabilisation]
+pin: virtual_pin:BED_WARP_STABILISE_pin
+value: 0
+```
