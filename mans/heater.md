@@ -16,7 +16,7 @@
 
 1. Дополннительная плата mcu - [expander mcu Voron](https://aliexpress.ru/item/1005002394568889.html)
 2. [Gdstime GDB 12032 Пластиковый вентилятор 12см 24В](https://aliexpress.ru/item/1005002311794444.html)
-3. [Вентилятор охлаждения, кулер DC12025HBL 24V, 120*120*25мм, подшипник качения **2 штуки**](https://www.ozon.ru/product/ventilyator-ohlazhdeniya-kuler-dc12025hbl-24v-120-120-25mm-podshipnik-kacheniya-1990050205/)
+3. [Вентилятор охлаждения, кулер DC12025HBL 24V, 120на120на25мм, подшипник качения **2 штуки**](https://www.ozon.ru/product/ventilyator-ohlazhdeniya-kuler-dc12025hbl-24v-120-120-25mm-podshipnik-kacheniya-1990050205/)
 4. [Автоматический выключатель 10А SSR-10DA](https://www.ozon.ru/product/avtomaticheskiy-vyklyuchatel-10a-1661490786/)
 5. [PTC Нагреватель Керамический Постоянной Температуры Высокого Напряжения 220 В 400 Вт](https://www.ozon.ru/product/ptc-nagrevatel-keramicheskiy-postoyannoy-temperatury-vysokogo-napryazheniya-220-v-400-vt-2164837347)
 6. [Термистор 100k 3950. можно 2 шт](https://aliexpress.ru/item/1005006645736045.html)
