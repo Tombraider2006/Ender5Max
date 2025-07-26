@@ -138,7 +138,7 @@ gcode:
 
 ищем раздел:
 
-```
+```diff
 [output_pin light_pin]
 #pin: nozzle_mcu: PB0 #PA10
 pin: PC0
@@ -156,7 +156,7 @@ value: 1.0
 
 чтобы принтер не шумел обдувом материнской платы при простое.
 
-**надо заменить** раздел `controller_fan`. старый стираем этот вставляем.
+**надо заменить** раздел `controller_fan`. ищем раздел в котором есть `PB1` старый стираем этот вставляем.
 
 ```
 [controller_fan MCU_fan] # включаем обдув после включения драйверов
@@ -245,7 +245,7 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 
 В файле `printer.cfg` находим разделы и удаляем.
 
-```
+```diff
 ###喷头前面风扇
 [output_pin fan0]
 pin: !nozzle_mcu:PB15
@@ -295,7 +295,7 @@ hardware_pwm: false
 в файле `gcode_macro.cfg` ищем разделы и удаляем:
 
 
-```
+```diff
 [gcode_macro M106]
 gcode:
   {% set fan = 0 %}
