@@ -20,7 +20,7 @@
 4. [Автоматический выключатель 10А SSR-10DA](https://www.ozon.ru/product/avtomaticheskiy-vyklyuchatel-10a-1661490786/)
 5. [PTC Нагреватель Керамический Постоянной Температуры Высокого Напряжения 220 В 400 Вт](https://www.ozon.ru/product/ptc-nagrevatel-keramicheskiy-postoyannoy-temperatury-vysokogo-napryazheniya-220-v-400-vt-2164837347)
 6. [Термистор 100k 3950. можно 2 шт](https://aliexpress.ru/item/1005006645736045.html)
-7. [Вентилятор 4010 24V](https://creality-3d.ru/goods/Axial-Fan_4010_24V_7000_L1400_BX?from=OTk4&mod_id=302824066)
+7. Вентилятор 4010 5V
 8. [вплавляемые гайки 100PCS, M3xL4xOD4.5](https://aliexpress.ru/item/1005006079067094.html)
 9. винты м4х40(8шт) с гайкой(8 шт)
 10. [Провода 24AWG](https://aliexpress.ru/item/1005004336218242.html)
