@@ -253,6 +253,8 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 
 1.2.0.20 [тут](/stock/config_1.2.0.20/)
 
+1.2.0.21 [тут](/stock/config_1.2.0.21/)
+
 
 
 
