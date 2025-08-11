@@ -4,7 +4,19 @@
 <h2>Прошивки</h2>
 
 
-На данный момент получить  `root` можно с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware/releases/latest) 
+На данный момент получить  `root` можно с помощью прошивки [1.2.0.21](https://www.crealitycloud.com/downloads/firmware/ender-series/ender-5-max) с паролем `creality_2024`
+
+![](/images/root1.jpg)
+
+![](/images/root2.jpg)
+
+![](/images/root3.jpg)
+
+
+
+
+
+<details><summary>или с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware/releases/latest) устарело</summary>
 
 с паролем `creality_2025` 
 
@@ -12,6 +24,13 @@
 
 ```
 /etc/ota_bin/local_ota_update.sh /tmp/udisk/sda/*.img
+```
+
+или
+
+
+```
+/etc/ota_bin/local_ota_update.sh /tmp/udisk/sda1/*.img
 ```
 после обновления необходимо выключить\включить питание! обязательно!
 
@@ -35,7 +54,7 @@ done
 reboot
 ```
 После этого можно подсунуть системе любую прошивку, она воспримет ее как новую.
-
+</details>
 ## Установка HELPER-SCRIPT
 
 ### Внимание! если вы установите хелпер скрипт то отключите уведомление об обновлении. так же не обновляйте потом прошивку по wifi пока не сбросите принтер до заводских настроек. 
