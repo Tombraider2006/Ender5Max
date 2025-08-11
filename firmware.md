@@ -16,7 +16,7 @@
 
 
 
-<details><summary>или с помощью [**модифицированной прошивки**](https://github.com/zevaryx/ender-5-max-firmware/releases/latest) устарело</summary>
+<details><summary>или с помощью модифицированной прошивки https://github.com/zevaryx/ender-5-max-firmware/releases/latest устарело</summary>
 
 с паролем `creality_2025` 
 
