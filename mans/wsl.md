@@ -167,3 +167,5 @@ Verifying (block count = 338)...
 Verification Complete: SHA = BB45B9575AC57FFF03CA5FE09186DB479E09BF53
 CAN Flash Success
 ```
+
+Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/)
