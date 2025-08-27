@@ -70,6 +70,9 @@ usbipd bind --busid 1-2
 ```
 usbipd attach --wsl --busid <busid>
 ```
+
+*не забываем заменить `<busid>` на свое значение*
+
 ![](/images/usb_attach.jpg)
 
 Откройте Ubuntu 
