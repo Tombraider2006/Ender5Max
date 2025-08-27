@@ -104,10 +104,10 @@ usbipd attach --wsl --busid <busid>
 
 
 
-Откройте Ubuntu 
+### Откройте Ubuntu 
 
 ```
-wsl
+wsl.exe -d Ubuntu-24.04
 ```
 
 установим утилиты usb 
