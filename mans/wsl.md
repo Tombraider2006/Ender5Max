@@ -14,14 +14,18 @@ wsl --install
 
 Подробно про  установку можно [почитать тут](https://learn.microsoft.com/ru-ru/windows/wsl/install) 
 
+**После установки обязательно перезагрузить компьютер!**
+иначе будет у вас ошибка вылезать.
 
 ### Устанавливаем ubuntu 
 
 ```
 wsl.exe --install Ubuntu-24.04
 ```
+после установки вероятнее всего запустится автоматически и предложит ввести имя и потом пароль дважды. если не запустилось : 
 
-Запускаем
+
+#### Запуск Ubuntu
 ```
 wsl.exe -d Ubuntu-24.04
 ```
@@ -83,7 +87,13 @@ usbipd attach --wsl --busid <busid>
 wsl
 ```
 
-вводим 
+установим утилиты usb 
+
+```
+sudo apt install usbutils
+```
+затем проверим наконец что же у нас на портах usb
+
 ```
 lsusb
 ```
@@ -125,8 +135,34 @@ git reset --hard origin/master
 virtualenv --system-site-packages $HOME/klippy-env
 $HOME/klippy-env/bin/pip3 install -r $HOME/klipper/scripts/klippy-requirements.txt
 ```
+### Снова включаем usb 
 
-Включить загрузчик
+Дело в том что когда мы переключили наше устройство в режим загрузки оно переподключилось и сменило ком порт. поэтому нам снова надо его подключить к подсистеме linux
+```
+usbipd list
+```
+смотрим как наше устройство отображается. вероятнее всего тот же USBID но возможны варианты
+
+```
+usbipd bind --busid <busid>
+```
+в соседнем окошке с правами администратора включаем 
+
+```
+usbipd attach --wsl --busid <busid>
+```
+
+*не забываем заменить `<busid>` на свое значение*
+
+проверяем в окошке с включенным линуксом 
+
+```
+lsusb
+```
+что у нас появилось наше устройство
+
+
+#### Включить загрузчик
 
 ```
 CARTO_DEV=$(ls /dev/serial/by-id/usb-* | grep "IDM\|Cartographer" | head -1)
