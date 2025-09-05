@@ -44,14 +44,14 @@ sudo apt update && sudo apt upgrade -y
 выходим пока из установленного дистрибутива, так как нам надо еще доустановить пакет для usb подключения.  
 
 ```
- exit
+exit
 ```
 ### Увидеть USB в Linux 
 
 Устанавливаем пакет для того чтобы видеть подключенные usb устройства 
 
 ```
- winget install --interactive --exact dorssel.usbipd-win
+winget install --interactive --exact dorssel.usbipd-win
 ```
 
 Список всех USB-устройств, подключенных к Windows, откройте PowerShell **в режиме администратора** и введите следующую команду. После перечисления устройств выберите и скопируйте идентификатор шины устройства, который вы хотите подключить к WSL.
@@ -231,5 +231,6 @@ Verifying (block count = 338)...
 Verification Complete: SHA = BB45B9575AC57FFF03CA5FE09186DB479E09BF53
 CAN Flash Success
 ```
+
 
 Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/)
