@@ -134,7 +134,6 @@ lsusb
 Вам необходимо выполнить следующие команды для установки необходимых пакетов.
 
 ```
-sudo apt-get update
 sudo apt-get install virtualenv python3-dev python3-pip python3-setuptools libffi-dev build-essential git dfu-util
 ```
 
@@ -234,3 +233,4 @@ CAN Flash Success
 
 
 Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/)
+
