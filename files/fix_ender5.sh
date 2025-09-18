@@ -20,7 +20,7 @@ show_menu() {
     printf "========================================\n\n"
 
     if [ -f "${PRINTER_CFG}.bak" ] || [ -f "${GCODE_MACRO_CFG}.bak" ]; then
-        printf "[1] ${GREEN}Установить исправления${RESET}\n"
+        printf "[1] ${RED}Установить исправления (недоступно)${RESET}\n"
         printf "[2] ${GREEN}Откатить исправления${RESET}\n"
     else
         printf "[1] ${GREEN}Установить исправления${RESET}\n"
@@ -30,6 +30,7 @@ show_menu() {
     printf "[3] Выйти\n\n"
     printf "Выберите действие: "
 }
+
 
 apply_fixes() {
     echo -e "${YELLOW}⚙️ Вносим исправления...${RESET}"
