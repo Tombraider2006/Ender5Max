@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v3.0
+#   Tom Tomich Script v3.1
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -19,30 +19,31 @@ HELPER_DIR="/usr/data/helper"
 
 show_header() {
   clear
-  echo -e "${YELLOW}========================================${RESET}"
-  echo -e "${YELLOW}🚀 Tom Tomich Script v3.0 (Nebula Pad)${RESET}"
-  echo -e "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
-  echo -e "${YELLOW}========================================${RESET}"
+  printf "%b\n" "${YELLOW}========================================${RESET}"
+  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.1 (Nebula Pad)${RESET}"
+  printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
+  printf "%b\n" "${YELLOW}========================================${RESET}"
   echo ""
 }
 
 confirm_action() {
-  echo -n "Вы уверены? (y/n): "
+  printf "Вы уверены? (y/n): "
   read -r ans
   [[ "$ans" == "y" || "$ans" == "Y" ]]
 }
 
 prepare_helper() {
   if [ ! -d "$HELPER_DIR" ]; then
-    echo -e "${YELLOW}📥 Скачиваем Helper Script...${RESET}"
+    printf "%b\n" "${YELLOW}📥 Скачиваем Helper Script...${RESET}"
     git clone https://github.com/Guilouz/Creality-Helper-Script.git "$HELPER_DIR"
     if [ $? -ne 0 ]; then
-      echo -e "${RED}❌ Ошибка загрузки Helper Script${RESET}"
+      printf "%b\n" "${RED}❌ Ошибка загрузки Helper Script${RESET}"
       exit 1
     fi
   else
-    echo -e "${YELLOW}🔄 Обновляем Helper Script...${RESET}"
-    cd "$HELPER_DIR" && git pull
+    printf "%b\n" "${YELLOW}🔄 Обновляем Helper Script...${RESET}"
+    cd "$HELPER_DIR" || exit
+    git pull
   fi
 }
 
@@ -66,27 +67,27 @@ install_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh"; }
 menu_install() {
   while true; do
     show_header
-    echo -e "${YELLOW}[УСТАНОВКА]${RESET}"
-    if is_installed_moonraker; then echo "[1] ${GREEN}🟢 Установить Moonraker${RESET}"; else echo "[1] ${RED}🔴 Установить Moonraker${RESET}"; fi
-    if is_installed_fluidd; then echo "[2] ${GREEN}🟢 Установить Fluidd${RESET}"; else echo "[2] ${RED}🔴 Установить Fluidd${RESET}"; fi
-    if is_installed_mainsail; then echo "[3] ${GREEN}🟢 Установить Mainsail${RESET}"; else echo "[3] ${RED}🔴 Установить Mainsail${RESET}"; fi
-    if is_installed_entware; then echo "[4] ${GREEN}🟢 Установить Entware${RESET}"; else echo "[4] ${RED}🔴 Установить Entware${RESET}"; fi
-    if is_installed_shell; then echo "[5] ${GREEN}🟢 Включить Klipper Gcode Shell Command${RESET}"; else echo "[5] ${RED}🔴 Включить Klipper Gcode Shell Command${RESET}"; fi
-    if is_installed_shapers; then echo "[6] ${GREEN}🟢 Установить Improved Shapers Calibrations${RESET}"; else echo "[6] ${RED}🔴 Установить Improved Shapers Calibrations${RESET}"; fi
+    printf "%b\n" "${YELLOW}[УСТАНОВКА]${RESET}"
+    if is_installed_moonraker; then printf "[1] %b\n" "${GREEN}🟢 Установить Moonraker${RESET}"; else printf "[1] %b\n" "${RED}🔴 Установить Moonraker${RESET}"; fi
+    if is_installed_fluidd; then printf "[2] %b\n" "${GREEN}🟢 Установить Fluidd${RESET}"; else printf "[2] %b\n" "${RED}🔴 Установить Fluidd${RESET}"; fi
+    if is_installed_mainsail; then printf "[3] %b\n" "${GREEN}🟢 Установить Mainsail${RESET}"; else printf "[3] %b\n" "${RED}🔴 Установить Mainsail${RESET}"; fi
+    if is_installed_entware; then printf "[4] %b\n" "${GREEN}🟢 Установить Entware${RESET}"; else printf "[4] %b\n" "${RED}🔴 Установить Entware${RESET}"; fi
+    if is_installed_shell; then printf "[5] %b\n" "${GREEN}🟢 Включить Klipper Gcode Shell Command${RESET}"; else printf "[5] %b\n" "${RED}🔴 Включить Klipper Gcode Shell Command${RESET}"; fi
+    if is_installed_shapers; then printf "[6] %b\n" "${GREEN}🟢 Установить Improved Shapers Calibrations${RESET}"; else printf "[6] %b\n" "${RED}🔴 Установить Improved Shapers Calibrations${RESET}"; fi
     echo "[b] Назад в главное меню"
     echo ""
-    echo -n "Выберите действие: "
+    printf "Выберите действие: "
     read -r choice
     case "$choice" in
-      1) confirm_action && install_moonraker ;;
-      2) confirm_action && install_fluidd ;;
-      3) confirm_action && install_mainsail ;;
-      4) confirm_action && install_entware ;;
-      5) confirm_action && install_shell ;;
-      6) confirm_action && install_shapers ;;
+      1) confirm_action && install_moonraker;;
+      2) confirm_action && install_fluidd;;
+      3) confirm_action && install_mainsail;;
+      4) confirm_action && install_entware;;
+      5) confirm_action && install_shell;;
+      6) confirm_action && install_shapers;;
       b|B) return ;;
     esac
-    echo -e "${YELLOW}Нажмите Enter для продолжения...${RESET}"
+    printf "%b\n" "${YELLOW}✔️ Действие завершено. Нажмите Enter...${RESET}"
     read
   done
 }
@@ -95,27 +96,27 @@ menu_install() {
 menu_remove() {
   while true; do
     show_header
-    echo -e "${YELLOW}[УДАЛЕНИЕ]${RESET}"
-    if is_installed_moonraker; then echo "[1] ${GREEN}🟢 Удалить Moonraker${RESET}"; else echo "[1] ${RED}🔴 Удалить Moonraker${RESET}"; fi
-    if is_installed_fluidd; then echo "[2] ${GREEN}🟢 Удалить Fluidd${RESET}"; else echo "[2] ${RED}🔴 Удалить Fluidd${RESET}"; fi
-    if is_installed_mainsail; then echo "[3] ${GREEN}🟢 Удалить Mainsail${RESET}"; else echo "[3] ${RED}🔴 Удалить Mainsail${RESET}"; fi
-    if is_installed_entware; then echo "[4] ${GREEN}🟢 Удалить Entware${RESET}"; else echo "[4] ${RED}🔴 Удалить Entware${RESET}"; fi
-    if is_installed_shell; then echo "[5] ${GREEN}🟢 Выключить Klipper Gcode Shell Command${RESET}"; else echo "[5] ${RED}🔴 Выключить Klipper Gcode Shell Command${RESET}"; fi
-    if is_installed_shapers; then echo "[6] ${GREEN}🟢 Удалить Improved Shapers Calibrations${RESET}"; else echo "[6] ${RED}🔴 Удалить Improved Shapers Calibrations${RESET}"; fi
+    printf "%b\n" "${YELLOW}[УДАЛЕНИЕ]${RESET}"
+    if is_installed_moonraker; then printf "[1] %b\n" "${GREEN}🟢 Удалить Moonraker${RESET}"; else printf "[1] %b\n" "${RED}🔴 Удалить Moonraker${RESET}"; fi
+    if is_installed_fluidd; then printf "[2] %b\n" "${GREEN}🟢 Удалить Fluidd${RESET}"; else printf "[2] %b\n" "${RED}🔴 Удалить Fluidd${RESET}"; fi
+    if is_installed_mainsail; then printf "[3] %b\n" "${GREEN}🟢 Удалить Mainsail${RESET}"; else printf "[3] %b\n" "${RED}🔴 Удалить Mainsail${RESET}"; fi
+    if is_installed_entware; then printf "[4] %b\n" "${GREEN}🟢 Удалить Entware${RESET}"; else printf "[4] %b\n" "${RED}🔴 Удалить Entware${RESET}"; fi
+    if is_installed_shell; then printf "[5] %b\n" "${GREEN}🟢 Выключить Klipper Gcode Shell Command${RESET}"; else printf "[5] %b\n" "${RED}🔴 Выключить Klipper Gcode Shell Command${RESET}"; fi
+    if is_installed_shapers; then printf "[6] %b\n" "${GREEN}🟢 Удалить Improved Shapers Calibrations${RESET}"; else printf "[6] %b\n" "${RED}🔴 Удалить Improved Shapers Calibrations${RESET}"; fi
     echo "[b] Назад в главное меню"
     echo ""
-    echo -n "Выберите действие: "
+    printf "Выберите действие: "
     read -r choice
     case "$choice" in
-      1) confirm_action && install_moonraker ;;
-      2) confirm_action && install_fluidd ;;
-      3) confirm_action && install_mainsail ;;
-      4) confirm_action && install_entware ;;
-      5) confirm_action && install_shell ;;
-      6) confirm_action && install_shapers ;;
+      1) confirm_action && install_moonraker;;
+      2) confirm_action && install_fluidd;;
+      3) confirm_action && install_mainsail;;
+      4) confirm_action && install_entware;;
+      5) confirm_action && install_shell;;
+      6) confirm_action && install_shapers;;
       b|B) return ;;
     esac
-    echo -e "${YELLOW}Нажмите Enter для продолжения...${RESET}"
+    printf "%b\n" "${YELLOW}✔️ Действие завершено. Нажмите Enter...${RESET}"
     read
   done
 }
@@ -129,7 +130,7 @@ while true; do
   echo "[2] УДАЛЕНИЕ"
   echo "[q] Выйти"
   echo ""
-  echo -n "Выберите действие: "
+  printf "Выберите действие: "
   read -r choice
   case "$choice" in
     1) menu_install ;;
