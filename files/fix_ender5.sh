@@ -20,11 +20,11 @@ show_menu() {
     echo "========================================"
     echo
     if [ -f "${PRINTER_CFG}.bak" ] || [ -f "${GCODE_MACRO_CFG}.bak" ]; then
-        echo "[1] ${GREEN}Установить исправления${RESET}"
-        echo "[2] ${GREEN}Откатить исправления${RESET}"
+        echo -e "[1] ${GREEN}Установить исправления${RESET}"
+        echo -e "[2] ${GREEN}Откатить исправления${RESET}"
     else
-        echo "[1] ${GREEN}Установить исправления${RESET}"
-        echo "[2] ${RED}Откатить исправления (недоступно)${RESET}"
+        echo -e "[1] ${GREEN}Установить исправления${RESET}"
+        echo -e "[2] ${RED}Откатить исправления (недоступно)${RESET}"
     fi
     echo "[3] Выйти"
     echo
