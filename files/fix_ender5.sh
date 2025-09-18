@@ -2,14 +2,9 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v4.1
+#   Tom Tomich Script v4.2
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
-
-YELLOW="\033[1;33m"
-GREEN="\033[1;32m"
-RED="\033[1;31m"
-RESET="\033[0m"
 
 PRINTER_CFG="/usr/data/printer_data/config/printer.cfg"
 MACRO_CFG="/usr/data/printer_data/config/gcode_macro.cfg"
@@ -19,10 +14,10 @@ HELPER_DIR="/usr/data/helper"
 
 show_header() {
   clear
-  printf "%b\n" "${YELLOW}========================================${RESET}"
-  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v4.1 (Nebula Pad)${RESET}"
-  printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
-  printf "%b\n" "${YELLOW}========================================${RESET}"
+  echo "========================================"
+  echo "🚀 Tom Tomich Script v4.2 (Nebula Pad)"
+  echo " Helper & Fix Tool for Ender-5 Max"
+  echo "========================================"
   echo ""
 }
 
@@ -34,20 +29,16 @@ confirm_action() {
 
 prepare_helper() {
   if [ ! -d "$HELPER_DIR" ]; then
-    printf "%b\n" "${YELLOW}📥 Скачиваем Helper Script...${RESET}"
+    echo "📥 Скачиваем Helper Script..."
     git clone https://github.com/Guilouz/Creality-Helper-Script.git "$HELPER_DIR"
     if [ $? -ne 0 ]; then
-      printf "%b\n" "${RED}❌ Ошибка загрузки Helper Script${RESET}"
+      echo "❌ Ошибка загрузки Helper Script"
       exit 1
     fi
   else
-    printf "%b\n" "${YELLOW}🔄 Обновляем Helper Script...${RESET}"
+    echo "🔄 Обновляем Helper Script..."
     cd "$HELPER_DIR" || exit
     git pull
-  fi
-
-  if [ -f "$HELPER_DIR/scripts/tools.sh" ]; then
-    . "$HELPER_DIR/scripts/tools.sh"
   fi
 }
 
