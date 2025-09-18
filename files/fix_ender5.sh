@@ -6,11 +6,6 @@ MACRO_CFG="/usr/data/printer_data/config/gcode_macro.cfg"
 PRINTER_BAK="${PRINTER_CFG}.bak"
 MACRO_BAK="${MACRO_CFG}.bak"
 
-GREEN="\033[1;32m"
-RED="\033[1;31m"
-YELLOW="\033[1;33m"
-RESET="\033[0m"
-
 show_header() {
   clear
   echo "========================================"
@@ -104,15 +99,14 @@ while true; do
   show_header
   check_status
   echo "Меню:"
-if [ "$FIXED" = false ]; then
-  printf "[1] ${GREEN}Установить исправления${RESET}\n"
-  printf "[2] ${RED}Откатить исправления (недоступно)${RESET}\n"
-else
-  printf "[1] ${RED}Установить исправления (уже установлены)${RESET}\n"
-  printf "[2] ${GREEN}Откатить исправления${RESET}\n"
-fi
-printf "[3] Выйти\n\n"
-  echo ""
+  if [ "$FIXED" = false ]; then
+    echo -e "[1] \033[1;32mУстановить исправления\033[0m"
+    echo -e "[2] \033[1;31mОткатить исправления (недоступно)\033[0m"
+  else
+    echo -e "[1] \033[1;31mУстановить исправления (уже установлены)\033[0m"
+    echo -e "[2] \033[1;32mОткатить исправления\033[0m"
+  fi
+  echo -e "[3] Выйти\n"
   printf "Выберите действие: "
   read choice
   case "$choice" in
