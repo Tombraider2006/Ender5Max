@@ -15,9 +15,11 @@ RESET="\033[0m"
 
 show_menu() {
     clear
-    printf "========================================\n"
-    printf "🚀 Tom Tomich Script (Ender-5 Max Fix)\n"
-    printf "========================================\n\n"
+printf "========================================\n"
+printf "🚀 Tom Tomich Script (Ender-5 Max Fix)\n"
+printf "========================================\n"
+printf "${BLUE_BOLD_BLINK}⚠️  Вносить изменения только после установки Helper Script пунктов 1 (2 или 3), 4, 5, 10${RESET}\n\n"
+
 
     if [ -f "${PRINTER_CFG}.bak" ] || [ -f "${GCODE_MACRO_CFG}.bak" ]; then
         printf "[1] ${RED}Установить исправления (недоступно)${RESET}\n"
