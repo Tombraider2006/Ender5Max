@@ -103,10 +103,6 @@ sh /usr/data/helper-script/helper.sh
 ```
 wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O /tmp/fix_ender5.sh && sh /tmp/fix_ender5.sh
 ```
-3. Если нужно откатить изменения — используем `restore`
-```
-wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O /tmp/fix_ender5.sh && sh /tmp/fix_ender5.sh --restore
-```
 ### Устарело 
 <details>немного оживим наш конфиг:<summary>
 
