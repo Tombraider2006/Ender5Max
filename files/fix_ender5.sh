@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v3.9
+#   Tom Tomich Script v4.0
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -20,7 +20,7 @@ HELPER_DIR="/usr/data/helper"
 show_header() {
   clear
   printf "%b\n" "${YELLOW}========================================${RESET}"
-  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.9 (Nebula Pad)${RESET}"
+  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v4.0 (Nebula Pad)${RESET}"
   printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
   printf "%b\n" "${YELLOW}========================================${RESET}"
   echo ""
@@ -69,24 +69,84 @@ is_installed_shell() { grep -q "gcode_shell_command" "$PRINTER_CFG" 2>/dev/null;
 is_installed_shapers() { [ -d "/usr/data/shaper_calibrations" ]; }
 is_installed_e5mfix() { [ -f "$PRINTER_BAK" ] && [ -f "$MACRO_BAK" ]; }
 
-# Вызовы install/remove скриптов Guilouz (с tools.sh вывод логов будет виден)
-install_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh"; read -p "Нажмите Enter..."; }
-remove_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; read -p "Нажмите Enter..."; }
+# Вызовы install/remove с log_action
+install_moonraker() {
+  log_action "Установка Moonraker..."
+  sh "$HELPER_DIR/scripts/moonraker_nginx.sh"
+  log_action "Установка Moonraker завершена"
+  read -p "Нажмите Enter..."
+}
+remove_moonraker() {
+  log_action "Удаление Moonraker..."
+  sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove
+  log_action "Удаление Moonraker завершено"
+  read -p "Нажмите Enter..."
+}
 
-install_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh"; read -p "Нажмите Enter..."; }
-remove_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh" remove; read -p "Нажмите Enter..."; }
+install_fluidd() {
+  log_action "Установка Fluidd..."
+  sh "$HELPER_DIR/scripts/fluidd.sh"
+  log_action "Установка Fluidd завершена"
+  read -p "Нажмите Enter..."
+}
+remove_fluidd() {
+  log_action "Удаление Fluidd..."
+  sh "$HELPER_DIR/scripts/fluidd.sh" remove
+  log_action "Удаление Fluidd завершено"
+  read -p "Нажмите Enter..."
+}
 
-install_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh"; read -p "Нажмите Enter..."; }
-remove_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh" remove; read -p "Нажмите Enter..."; }
+install_mainsail() {
+  log_action "Установка Mainsail..."
+  sh "$HELPER_DIR/scripts/mainsail.sh"
+  log_action "Установка Mainsail завершена"
+  read -p "Нажмите Enter..."
+}
+remove_mainsail() {
+  log_action "Удаление Mainsail..."
+  sh "$HELPER_DIR/scripts/mainsail.sh" remove
+  log_action "Удаление Mainsail завершено"
+  read -p "Нажмите Enter..."
+}
 
-install_entware() { sh "$HELPER_DIR/scripts/entware.sh"; read -p "Нажмите Enter..."; }
-remove_entware() { sh "$HELPER_DIR/scripts/entware.sh" remove; read -p "Нажмите Enter..."; }
+install_entware() {
+  log_action "Установка Entware..."
+  sh "$HELPER_DIR/scripts/entware.sh"
+  log_action "Установка Entware завершена"
+  read -p "Нажмите Enter..."
+}
+remove_entware() {
+  log_action "Удаление Entware..."
+  sh "$HELPER_DIR/scripts/entware.sh" remove
+  log_action "Удаление Entware завершено"
+  read -p "Нажмите Enter..."
+}
 
-install_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh"; read -p "Нажмите Enter..."; }
-remove_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; read -p "Нажмите Enter..."; }
+install_shell() {
+  log_action "Включение Klipper Gcode Shell Command..."
+  sh "$HELPER_DIR/scripts/gcode_shell_command.sh"
+  log_action "Включение завершено"
+  read -p "Нажмите Enter..."
+}
+remove_shell() {
+  log_action "Выключение Klipper Gcode Shell Command..."
+  sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove
+  log_action "Выключение завершено"
+  read -p "Нажмите Enter..."
+}
 
-install_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh"; read -p "Нажмите Enter..."; }
-remove_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh" remove; read -p "Нажмите Enter..."; }
+install_shapers() {
+  log_action "Установка Improved Shapers Calibrations..."
+  sh "$HELPER_DIR/scripts/improved_shapers.sh"
+  log_action "Установка завершена"
+  read -p "Нажмите Enter..."
+}
+remove_shapers() {
+  log_action "Удаление Improved Shapers Calibrations..."
+  sh "$HELPER_DIR/scripts/improved_shapers.sh" remove
+  log_action "Удаление завершено"
+  read -p "Нажмите Enter..."
+}
 
 # ---------- Исправления Ender-5 Max ----------
 fix_e5m() {
@@ -94,7 +154,58 @@ fix_e5m() {
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
   echo "📂 Созданы бэкапы."
-  # Здесь код для чистки/добавления секций (как в v3.4)
+
+  # Чистим старые секции
+  sed -i '/\[firmware_retraction\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[gcode_shell_command beep\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[gcode_macro BEEP\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[delayed_gcode light_init\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[exclude_object\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[gcode_macro PID_BED\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\[gcode_macro PID_HOTEND\]/,/^$/d' "$MACRO_CFG"
+
+  # Добавляем новые секции
+  cat >> "$MACRO_CFG" <<'EOF'
+
+[firmware_retraction]
+retract_length: 0.45
+retract_speed: 30
+unretract_extra_length: 0
+unretract_speed: 30
+
+[gcode_shell_command beep]
+command: beep
+timeout: 2
+verbose: False
+
+[gcode_macro BEEP]
+description: Play a sound
+gcode:
+  RUN_SHELL_COMMAND CMD=beep
+
+[delayed_gcode light_init]
+initial_duration: 5.01
+gcode:
+  SET_PIN PIN=light_pin VALUE=1
+
+[exclude_object]
+
+[gcode_macro PID_BED]
+gcode:
+  PID_CALIBRATE HEATER=heater_bed TARGET={params.BED_TEMP|default(70)}
+  SAVE_CONFIG
+
+[gcode_macro PID_HOTEND]
+description: Start Hotend PID
+gcode:
+  G90
+  G28
+  G1 Z10 F600
+  M106 S255
+  PID_CALIBRATE HEATER=extruder TARGET={params.HOTEND_TEMP|default(250)}
+  M107
+EOF
+
   echo "✅ Исправления для Ender-5 Max применены."
   restart_klipper
   read -p "Нажмите Enter..."
