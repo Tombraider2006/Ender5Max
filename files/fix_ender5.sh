@@ -1,86 +1,51 @@
 #!/bin/bash
 set -u
 
-# fix_ender5.sh — финальная версия
-# Делает:
-#  - создаёт бэкапы printer.cfg.bak и gcode_macro.cfg.bak
-#  - удаляет старые проблемные блоки
-#  - добавляет новые блоки (light_pin, controller_fan, multi_pin, новые макросы)
-#  - добавляет firmware_retraction, BEEP, PID_BED, PID_HOTEND и др.
-#  - в конец printer.cfg вставляет restart_klipper для автоперезагрузки
-#
-# Использование:
-#   ./fix_ender5.sh           # применить правки
-#   ./fix_ender5.sh --restore # восстановить из .bak
+# ================================
+#   Tom Tomich Script v1.0
+#   Fix & Patch tool for Ender-5 Max
+# ================================
 
+# Пути к конфигам
 PRINTER_CFG="/usr/data/printer_data/config/printer.cfg"
 MACRO_CFG="/usr/data/printer_data/config/gcode_macro.cfg"
 PRINTER_BAK="${PRINTER_CFG}.bak"
 MACRO_BAK="${MACRO_CFG}.bak"
 
-usage() {
-  echo "Использование:"
-  echo "  $0            # внести правки (создаст .bak перед изменениями)"
-  echo "  $0 --restore  # восстановить файлы из .bak"
-  exit 1
+# --- Функция: показать шапку ---
+show_header() {
+  clear
+  echo "#############################################"
+  echo "#                                           #"
+  echo "#         🚀 Tom Tomich Script v1.0         #"
+  echo "#   Fix & Patch tool for Ender-5 Max        #"
+  echo "#                                           #"
+  echo "#   Author : Tom Tomich                     #"
+  echo "#   Purpose: Автоматизация правок           #"
+  echo "#            printer.cfg и gcode_macro.cfg  #"
+  echo "#                                           #"
+  echo "#############################################"
+  echo ""
 }
 
-if [[ "${1:-}" == "--restore" ]]; then
-  if [[ -f "$PRINTER_BAK" && -f "$MACRO_BAK" ]]; then
-    cp -p "$PRINTER_BAK" "$PRINTER_CFG"
-    cp -p "$MACRO_BAK" "$MACRO_CFG"
-    echo "♻️  Конфиги восстановлены из бэкапов."
-    # ---------------------------
-    # Автоматическая перезагрузка Klipper
-    # ---------------------------
-    restart_klipper
+apply_fixes() {
+  cp -p "$PRINTER_CFG" "$PRINTER_BAK"
+  cp -p "$MACRO_CFG" "$MACRO_BAK"
+  echo "📂 Созданы бэкапы:"
+  echo "   $PRINTER_BAK"
+  echo "   $MACRO_BAK"
 
-    echo "✅ Все правки внесены."
-    echo "🔄 Клиппер перегружается..."
-    exit 0
-  else
-    echo "❗ Бэкапы не найдены:"
-    echo "   $PRINTER_BAK"
-    echo "   $MACRO_BAK"
-    exit 2
-  fi
-fi
+  # --- printer.cfg ---
+  sed -i 's/^\[output_pin Height_module2\]/[output_pin _Height_module2]/' "$PRINTER_CFG"
+  for pat in "output_pin light_pin" "output_pin MainBoardFan" \
+             "output_pin fan0" "output_pin en_fan0" "output_pin fan1" "output_pin en_fan1" \
+             "multi_pin part_fans" "multi_pin en_part_fans" "fan_generic part" "controller_fan MCU_fan"
+  do
+    sed -i "/^\[$pat\]/,/^$/d" "$PRINTER_CFG"
+    sed -i "/^\[$pat\]/,/^\[/d" "$PRINTER_CFG"
+  done
 
-# Проверка наличия файлов
-if [[ ! -f "$PRINTER_CFG" ]]; then
-  echo "❗ Не найден $PRINTER_CFG"
-  exit 3
-fi
-if [[ ! -f "$MACRO_CFG" ]]; then
-  echo "❗ Не найден $MACRO_CFG"
-  exit 4
-fi
-
-# Создание бэкапов
-cp -p "$PRINTER_CFG" "$PRINTER_BAK"
-cp -p "$MACRO_CFG" "$MACRO_BAK"
-echo "📂 Созданы бэкапы:"
-echo "   $PRINTER_BAK"
-echo "   $MACRO_BAK"
-
-# ---------------------------
-# printer.cfg — правки
-# ---------------------------
-
-# 1. Height_module2 -> _Height_module2
-sed -i 's/^\[output_pin Height_module2\]/[output_pin _Height_module2]/' "$PRINTER_CFG"
-
-# 2. Удаляем light_pin / MainBoardFan / fan0..fan1 / multi_pin / controller_fan
-for pat in "output_pin light_pin" "output_pin MainBoardFan" \
-           "output_pin fan0" "output_pin en_fan0" "output_pin fan1" "output_pin en_fan1" \
-           "multi_pin part_fans" "multi_pin en_part_fans" "fan_generic part" "controller_fan MCU_fan"
-do
-  sed -i "/^\[$pat\]/,/^$/d" "$PRINTER_CFG"
-  sed -i "/^\[$pat\]/,/^\[/d" "$PRINTER_CFG"
-done
-
-# 3. Добавляем новые блоки
-cat <<'EOF' >> "$PRINTER_CFG"
+  cat <<'EOF' >> "$PRINTER_CFG"
 
 [output_pin light_pin] # освещение камеры принтера. косяк прошивки креалити.
 pin: !PC0
@@ -108,26 +73,21 @@ cycle_time: 0.0100
 hardware_pwm: false
 EOF
 
-# ---------------------------
-# gcode_macro.cfg — правки
-# ---------------------------
+  # --- gcode_macro.cfg ---
+  for pat in "gcode_macro M106" "gcode_macro M107" "gcode_macro TURN_OFF_FANS" "gcode_macro TURN_ON_FANS" \
+             "firmware_retraction" "gcode_shell_command beep" "gcode_macro BEEP" \
+             "delayed_gcode light_init" "exclude_object" "gcode_macro PID_BED" "gcode_macro PID_HOTEND"
+  do
+    sed -i "/^\[$pat\]/,/^$/d" "$MACRO_CFG"
+    sed -i "/^\[$pat\]/,/^\[/d" "$MACRO_CFG"
+  done
+  sed -i '/^variable_fan0_min:/d' "$MACRO_CFG"
+  sed -i '/^variable_fan1_min:/d' "$MACRO_CFG"
 
-# 1. Удаляем старые макросы и переменные
-for pat in "gcode_macro M106" "gcode_macro M107" "gcode_macro TURN_OFF_FANS" "gcode_macro TURN_ON_FANS" \
-           "firmware_retraction" "gcode_shell_command beep" "gcode_macro BEEP" \
-           "delayed_gcode light_init" "exclude_object" "gcode_macro PID_BED" "gcode_macro PID_HOTEND"
-do
-  sed -i "/^\[$pat\]/,/^$/d" "$MACRO_CFG"
-  sed -i "/^\[$pat\]/,/^\[/d" "$MACRO_CFG"
-done
-sed -i '/^variable_fan0_min:/d' "$MACRO_CFG"
-sed -i '/^variable_fan1_min:/d' "$MACRO_CFG"
-
-# 2. Добавляем новые блоки
-cat <<'EOF' >> "$MACRO_CFG"
+  cat <<'EOF' >> "$MACRO_CFG"
 
 [firmware_retraction]
-retract_length: 0.45 # безопасное значение для того пластика которым чаще всего печатаете.
+retract_length: 0.45
 retract_speed: 30
 unretract_extra_length: 0
 unretract_speed: 30
@@ -137,30 +97,30 @@ command: beep
 timeout: 2
 verbose: False
 
-[gcode_macro BEEP] # звук бип. 
+[gcode_macro BEEP]
 description: Play a sound
 gcode:
   RUN_SHELL_COMMAND CMD=beep
 
-[delayed_gcode light_init] 
+[delayed_gcode light_init]
 initial_duration: 5.01
 gcode:
   SET_PIN PIN=light_pin VALUE=1
 
-[exclude_object] # исключение обьектов. 
+[exclude_object]
 
 [gcode_macro PID_BED]
 gcode:
   PID_CALIBRATE HEATER=heater_bed TARGET={params.BED_TEMP|default(70)}
   SAVE_CONFIG
 
-[gcode_macro PID_HOTEND] # и почему его не было. добавил
+[gcode_macro PID_HOTEND]
 description: Start Hotend PID
 gcode:
   G90
   G28
   G1 Z10 F600
-  M106 S255 #S255 
+  M106 S255
   PID_CALIBRATE HEATER=extruder TARGET={params.HOTEND_TEMP|default(250)}
   M107
 
@@ -194,10 +154,4 @@ gcode:
     SET_FAN_SPEED FAN=part SPEED=1
 EOF
 
-# ---------------------------
-# Автоматическая перезагрузка Klipper
-# ---------------------------
-restart_klipper
-
-echo "✅ Все правки внесены."
-echo "🔄 Клиппер перегружается..."
+  echo "✅ Новые настрой
