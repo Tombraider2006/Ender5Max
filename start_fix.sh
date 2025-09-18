@@ -1,12 +1,18 @@
 #!/bin/sh
 cd /usr/data || exit
 
-# Распаковать архив, если есть
-if [ -f "/mnt/data/fix_ender5_v5.1.zip" ]; then
-  unzip -o /mnt/data/fix_ender5_v5.1.zip -d /usr/data/
-  chmod +x /usr/data/fix_ender5_v5.1/*.sh
-fi
+# Скачиваем архив fix_ender5_v5.1 с GitHub
+wget --no-check-certificate -O fix_ender5_v5.1.zip https://github.com/Tombraider2006/Ender5Max/raw/main/fix_ender5_v5.1.zip
 
-# Запустить основное меню
+# Распаковываем архив
+unzip -o fix_ender5_v5.1.zip -d /usr/data/
+chmod +x /usr/data/fix_ender5_v5.1/*.sh
+
+# Запускаем основное меню
 cd /usr/data/fix_ender5_v5.1 || exit
 ./main.sh
+
+# Чистим за собой
+rm -f /usr/data/start_fix.sh
+rm -f /usr/data/fix_ender5_v5.1.zip
+
