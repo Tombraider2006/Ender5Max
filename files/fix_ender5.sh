@@ -6,6 +6,12 @@ set -u
 #   Fix & Patch tool for Ender-5 Max
 # ================================
 
+# Цвета
+BLUE="\033[1;34m"
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+RESET="\033[0m"
+
 # Пути к конфигам
 PRINTER_CFG="/usr/data/printer_data/config/printer.cfg"
 MACRO_CFG="/usr/data/printer_data/config/gcode_macro.cfg"
@@ -15,25 +21,25 @@ MACRO_BAK="${MACRO_CFG}.bak"
 # --- Функция: показать шапку ---
 show_header() {
   clear
-  echo "#############################################"
-  echo "#                                           #"
-  echo "#         🚀 Tom Tomich Script v1.0         #"
-  echo "#   Fix & Patch tool for Ender-5 Max        #"
-  echo "#                                           #"
-  echo "#   Author : Tom Tomich                     #"
-  echo "#   Purpose: Автоматизация правок           #"
-  echo "#            printer.cfg и gcode_macro.cfg  #"
-  echo "#                                           #"
-  echo "#############################################"
+  echo -e "${BLUE}#############################################${RESET}"
+  echo -e "${BLUE}#                                           #${RESET}"
+  echo -e "${BLUE}#         🚀 Tom Tomich Script v1.0         #${RESET}"
+  echo -e "${BLUE}#   Fix & Patch tool for Ender-5 Max        #${RESET}"
+  echo -e "${BLUE}#                                           #${RESET}"
+  echo -e "${BLUE}#   Author : Tom Tomich                     #${RESET}"
+  echo -e "${BLUE}#   Purpose: Автоматизация правок           #${RESET}"
+  echo -e "${BLUE}#            printer.cfg и gcode_macro.cfg  #${RESET}"
+  echo -e "${BLUE}#                                           #${RESET}"
+  echo -e "${BLUE}#############################################${RESET}"
   echo ""
 }
 
 apply_fixes() {
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
-  echo "📂 Созданы бэкапы:"
-  echo "   $PRINTER_BAK"
-  echo "   $MACRO_BAK"
+  echo -e "${YELLOW}📂 Созданы бэкапы:${RESET}"
+  echo -e "   $PRINTER_BAK"
+  echo -e "   $MACRO_BAK"
 
   # --- printer.cfg ---
   sed -i 's/^\[output_pin Height_module2\]/[output_pin _Height_module2]/' "$PRINTER_CFG"
@@ -154,34 +160,35 @@ gcode:
     SET_FAN_SPEED FAN=part SPEED=1
 EOF
 
-  echo "✅ Новые настройки применены."
-  echo "🔄 Клиппер перегружается..."
-  restart_klipper
+  echo -e "${GREEN}✅ Новые настройки применены.${RESET}"
+  echo -e "${YELLOW}🔄 Перезапуск Klipper...${RESET}"
+  curl -s -X POST "http://localhost:7125/printer/restart"
 }
 
 restore_backup() {
   if [[ -f "$PRINTER_BAK" && -f "$MACRO_BAK" ]]; then
     cp -p "$PRINTER_BAK" "$PRINTER_CFG"
     cp -p "$MACRO_BAK" "$MACRO_CFG"
-    echo "♻️  Конфиги восстановлены из бэкапов."
-    echo "🔄 Клиппер перегружается..."
-    restart_klipper
+    echo -e "${YELLOW}♻️  Конфиги восстановлены из бэкапов.${RESET}"
+    echo -e "${YELLOW}🔄 Перезапуск Klipper...${RESET}"
+    curl -s -X POST "http://localhost:7125/printer/restart"
+    echo -e "${GREEN}✅ Восстановление завершено.${RESET}"
   else
-    echo "❗ Бэкапы не найдены."
+    echo -e "${YELLOW}❗ Бэкапы не найдены.${RESET}"
   fi
 }
 
 # --- Меню ---
 show_header
-echo "1) Применить новые настройки"
-echo "2) Откатиться на бэкапы"
-echo "q) Выйти"
+echo -e "${GREEN}1) Применить новые настройки${RESET}"
+echo -e "${GREEN}2) Откатиться на бэкапы${RESET}"
+echo -e "${GREEN}q) Выйти${RESET}"
 echo -n "Выберите действие: "
 read choice
 
 case "$choice" in
   1) apply_fixes ;;
   2) restore_backup ;;
-  q|Q) echo "🚪 Выход." ;;
-  *) echo "❓ Неверный выбор" ;;
+  q|Q) echo -e "${YELLOW}🚪 Выход.${RESET}" ;;
+  *) echo -e "${YELLOW}❓ Неверный выбор${RESET}" ;;
 esac
