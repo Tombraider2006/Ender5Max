@@ -27,14 +27,52 @@ apply_fix() {
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
 
-  # Удаляем старые секции
-  sed -i '/\[firmware_retraction\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[gcode_shell_command beep\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[gcode_macro BEEP\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[delayed_gcode light_init\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[exclude_object\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[gcode_macro PID_BED\]/,/^$/d' "$MACRO_CFG"
-  sed -i '/\[gcode_macro PID_HOTEND\]/,/^$/d' "$MACRO_CFG"
+  #############################################
+  # printer.cfg исправления
+  #############################################
+
+  # 1. [output_pin Height_module2] → [output_pin _Height_module2]
+  sed -i 's/\\[output_pin Height_module2\\]/[output_pin _Height_module2]/' "$PRINTER_CFG"
+
+  # 2. light_pin секция
+  sed -i '/\\[output_pin light_pin\\]/,/^$/d' "$PRINTER_CFG"
+  cat >> "$PRINTER_CFG" <<'EOF'
+
+[output_pin light_pin] # освещение камеры принтера. косяк прошивки креалити.
+pin: !PC0
+pwm: True
+cycle_time: 0.010
+value: 1.0
+EOF
+
+  # 3. MainBoardFan → controller_fan MCU_fan
+  sed -i '/\\[output_pin MainBoardFan\\]/,/^$/d' "$PRINTER_CFG"
+  cat >> "$PRINTER_CFG" <<'EOF'
+
+[controller_fan MCU_fan] # включаем обдув после включения драйверов
+pin: PB1
+max_power: 1.0
+fan_speed: 1
+kick_start_time: 0
+stepper: stepper_x
+EOF
+
+  #############################################
+  # gcode_macro.cfg исправления
+  #############################################
+
+  # Чистим старые секции
+  sed -i '/\\[firmware_retraction\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_shell_command beep\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro BEEP\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[delayed_gcode light_init\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[exclude_object\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro PID_BED\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro PID_HOTEND\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro M106\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro M107\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro TURN_OFF_FANS\\]/,/^$/d' "$MACRO_CFG"
+  sed -i '/\\[gcode_macro TURN_ON_FANS\\]/,/^$/d' "$MACRO_CFG"
 
   # Добавляем новые секции
   cat >> "$MACRO_CFG" <<'EOF'
@@ -73,9 +111,38 @@ gcode:
   G90
   G28
   G1 Z10 F600
-  M106 S255
+  M106 S255 # включение вентилятора
   PID_CALIBRATE HEATER=extruder TARGET={params.HOTEND_TEMP|default(250)}
-  M107
+  M107 # выключение вентилятора
+
+[gcode_macro M106]
+description: Set Fan Speed. P0 for part
+gcode:
+  {% set fan_id = params.P|default(0)|int %}
+  {% if fan_id == 0 %}
+    {% set speed_param = params.S|default(255)|int %}
+    {% if speed_param > 0 %}
+      {% set speed = (speed_param|float / 255) %}
+    {% else %}
+      {% set speed = 0 %}
+    {% endif %}
+    SET_FAN_SPEED FAN=part SPEED={speed}
+  {% endif %}
+
+[gcode_macro M107]
+description: Set Fan Off. P0 for part
+gcode:
+  SET_FAN_SPEED FAN=part SPEED=0
+
+[gcode_macro TURN_OFF_FANS]
+description: Stop chamber, auxiliary and part fan
+gcode:
+  SET_FAN_SPEED FAN=part SPEED=0
+
+[gcode_macro TURN_ON_FANS]
+description: Turn on chamber, auxiliary and part fan
+gcode:
+  SET_FAN_SPEED FAN=part SPEED=1
 EOF
 
   echo "✅ Исправления применены."
