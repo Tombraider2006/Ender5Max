@@ -101,15 +101,13 @@ sh /usr/data/helper-script/helper.sh
 1. Переходим в папку с конфигами принтера. Скачиваем и запускаем скрипт fix_ender5.sh с GitHub
 
 ```
-cd /usr/data/printer_data/config/
-wget https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O fix_ender5.sh
-chmod +x fix_ender5.sh
-./fix_ender5.sh
+cd /usr/data/printer_data/config/ && wget -q https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O fix_ender5.sh && chmod +x fix_ender5.sh && ./fix_ender5.sh
+
 ```
 3. Если нужно откатить изменения — используем restore
 ```
-cd /usr/data/printer_data/config/
-./fix_ender5.sh --restore
+cd /usr/data/printer_data/config/ && ./fix_ender5.sh --restore
+
 ```
 ### Устарело 
 <details>немного оживим наш конфиг:<summary>
