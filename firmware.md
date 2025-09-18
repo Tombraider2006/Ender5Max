@@ -104,7 +104,7 @@ sh /usr/data/helper-script/helper.sh
 wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O /tmp/fix_ender5.sh && sh /tmp/fix_ender5.sh
 ```
 ### Устарело 
-<details>немного оживим наш конфиг:<summary>
+<details><summary>немного оживим наш конфиг:</summary>
 
 
 в вебпанели ищем значок слева {...}  в окошке ищем файл `gcode_macro.cfg` открываем его и мотаем в самый низ
