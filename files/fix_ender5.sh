@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 set -u
 
 # ================================
-#   Tom Tomich Script v3.5
+#   Tom Tomich Script v3.6
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -20,7 +20,7 @@ HELPER_DIR="/usr/data/helper"
 show_header() {
   clear
   printf "%b\n" "${YELLOW}========================================${RESET}"
-  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.5 (Nebula Pad)${RESET}"
+  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.6 (Nebula Pad)${RESET}"
   printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
   printf "%b\n" "${YELLOW}========================================${RESET}"
   echo ""
@@ -28,8 +28,8 @@ show_header() {
 
 confirm_action() {
   printf "Вы уверены? (y/n): "
-  read -r ans
-  [[ "$ans" == "y" || "$ans" == "Y" ]]
+  read ans
+  [ "$ans" = "y" ] || [ "$ans" = "Y" ]
 }
 
 prepare_helper() {
@@ -62,26 +62,33 @@ is_installed_mainsail() { [ -d "/usr/share/mainsail" ]; }
 is_installed_entware() { [ -d "/opt/bin" ]; }
 is_installed_shell() { grep -q "gcode_shell_command" "$PRINTER_CFG" 2>/dev/null; }
 is_installed_shapers() { [ -d "/usr/data/shaper_calibrations" ]; }
-is_installed_e5mfix() { [[ -f "$PRINTER_BAK" && -f "$MACRO_BAK" ]]; }
+is_installed_e5mfix() { [ -f "$PRINTER_BAK" ] && [ -f "$MACRO_BAK" ]; }
 
-# Вызовы install/remove скриптов Guilouz (через bash для вывода)
-install_moonraker() { bash "$HELPER_DIR/scripts/moonraker_nginx.sh"; }
-remove_moonraker() { bash "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; }
+# Вызовы install/remove скриптов Guilouz (через /bin/sh и set -x для вывода)
+run_with_trace() {
+  echo "⚙️ Запуск: $*"
+  set -x
+  /bin/sh "$@"
+  set +x
+}
 
-install_fluidd() { bash "$HELPER_DIR/scripts/fluidd.sh"; }
-remove_fluidd() { bash "$HELPER_DIR/scripts/fluidd.sh" remove; }
+install_moonraker() { run_with_trace "$HELPER_DIR/scripts/moonraker_nginx.sh"; }
+remove_moonraker() { run_with_trace "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; }
 
-install_mainsail() { bash "$HELPER_DIR/scripts/mainsail.sh"; }
-remove_mainsail() { bash "$HELPER_DIR/scripts/mainsail.sh" remove; }
+install_fluidd() { run_with_trace "$HELPER_DIR/scripts/fluidd.sh"; }
+remove_fluidd() { run_with_trace "$HELPER_DIR/scripts/fluidd.sh" remove; }
 
-install_entware() { bash "$HELPER_DIR/scripts/entware.sh"; }
-remove_entware() { bash "$HELPER_DIR/scripts/entware.sh" remove; }
+install_mainsail() { run_with_trace "$HELPER_DIR/scripts/mainsail.sh"; }
+remove_mainsail() { run_with_trace "$HELPER_DIR/scripts/mainsail.sh" remove; }
 
-install_shell() { bash "$HELPER_DIR/scripts/gcode_shell_command.sh"; }
-remove_shell() { bash "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; }
+install_entware() { run_with_trace "$HELPER_DIR/scripts/entware.sh"; }
+remove_entware() { run_with_trace "$HELPER_DIR/scripts/entware.sh" remove; }
 
-install_shapers() { bash "$HELPER_DIR/scripts/improved_shapers.sh"; }
-remove_shapers() { bash "$HELPER_DIR/scripts/improved_shapers.sh" remove; }
+install_shell() { run_with_trace "$HELPER_DIR/scripts/gcode_shell_command.sh"; }
+remove_shell() { run_with_trace "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; }
+
+install_shapers() { run_with_trace "$HELPER_DIR/scripts/improved_shapers.sh"; }
+remove_shapers() { run_with_trace "$HELPER_DIR/scripts/improved_shapers.sh" remove; }
 
 # ---------- Исправления Ender-5 Max ----------
 fix_e5m() {
@@ -89,15 +96,13 @@ fix_e5m() {
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
   echo "📂 Созданы бэкапы."
-  # ... (оставляем содержимое fix_e5m и restore_e5m как в v3.4) ...
-  # чтобы не занимать место, сокращено, но предполагается полностью вставлено
   echo "✅ Исправления для Ender-5 Max применены."
   restart_klipper
 }
 
 restore_e5m() {
   echo "♻️ Восстанавливаются бэкапы Ender-5 Max..."
-  if [[ -f "$PRINTER_BAK" && -f "$MACRO_BAK" ]]; then
+  if [ -f "$PRINTER_BAK" ] && [ -f "$MACRO_BAK" ]; then
     cp -p "$PRINTER_BAK" "$PRINTER_CFG"
     cp -p "$MACRO_BAK" "$MACRO_CFG"
     echo "📂 Конфиги восстановлены."
@@ -123,7 +128,7 @@ menu_install() {
     echo "[b] Назад в главное меню"
     echo ""
     printf "Выберите действие: "
-    read -r choice
+    read choice
     case "$choice" in
       1) if confirm_action; then install_moonraker; read -p "Нажмите Enter..."; fi;;
       2) if confirm_action; then install_fluidd; read -p "Нажмите Enter..."; fi;;
@@ -152,7 +157,7 @@ menu_remove() {
     echo "[b] Назад в главное меню"
     echo ""
     printf "Выберите действие: "
-    read -r choice
+    read choice
     case "$choice" in
       1) if confirm_action; then remove_moonraker; read -p "Нажмите Enter..."; fi;;
       2) if confirm_action; then remove_fluidd; read -p "Нажмите Enter..."; fi;;
@@ -176,7 +181,7 @@ while true; do
   echo "[q] Выйти"
   echo ""
   printf "Выберите действие: "
-  read -r choice
+  read choice
   case "$choice" in
     1) menu_install ;;
     2) menu_remove ;;
