@@ -104,8 +104,8 @@ sh /usr/data/helper-script/helper.sh
 wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider20
 06/Ender5Max/refs/heads/main/files/fix_e5m.sh -O /tmp/fix_e5m.sh && sh /tmp/fix_e5m.sh
 ```
-### Устарело 
-<details><summary>немного оживим наш конфиг:</summary>
+
+<details><summary>Устарело. есть в автоматической версии.</summary>
 
 
 в вебпанели ищем значок слева {...}  в окошке ищем файл `gcode_macro.cfg` открываем его и мотаем в самый низ
