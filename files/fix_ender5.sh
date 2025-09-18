@@ -104,14 +104,14 @@ while true; do
   show_header
   check_status
   echo "Меню:"
-  if [ "$FIXED" = false ]; then
-    echo "[1] ${GREEN}Установить исправления${RESET}"
-    echo "[2] ${RED}Откатить исправления (недоступно)${RESET}"
-  else
-    echo "[1] ${RED}Установить исправления (уже установлены)${RESET}"
-    echo "[2] ${GREEN}Откатить исправления${RESET}"
-  fi
-  echo "[3] Выйти"
+if [ "$FIXED" = false ]; then
+  printf "[1] ${GREEN}Установить исправления${RESET}\n"
+  printf "[2] ${RED}Откатить исправления (недоступно)${RESET}\n"
+else
+  printf "[1] ${RED}Установить исправления (уже установлены)${RESET}\n"
+  printf "[2] ${GREEN}Откатить исправления${RESET}\n"
+fi
+printf "[3] Выйти\n\n"
   echo ""
   printf "Выберите действие: "
   read choice
