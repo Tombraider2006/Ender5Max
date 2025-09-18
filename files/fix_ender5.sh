@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v4.2
+#   Tom Tomich Script v4.3
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -15,7 +15,7 @@ HELPER_DIR="/usr/data/helper"
 show_header() {
   clear
   echo "========================================"
-  echo "🚀 Tom Tomich Script v4.2 (Nebula Pad)"
+  echo "🚀 Tom Tomich Script v4.3 (Nebula Pad)"
   echo " Helper & Fix Tool for Ender-5 Max"
   echo "========================================"
   echo ""
@@ -40,6 +40,9 @@ prepare_helper() {
     cd "$HELPER_DIR" || exit
     git pull
   fi
+
+  # Делаем все скрипты исполняемыми
+  chmod +x "$HELPER_DIR/scripts/"*.sh 2>/dev/null
 }
 
 restart_klipper() {
@@ -142,12 +145,12 @@ menu_install() {
     printf "Выберите действие: "
     read choice
     case "$choice" in
-      1) if confirm_action; then sh "$HELPER_DIR/scripts/moonraker_nginx.sh"; fi;;
-      2) if confirm_action; then sh "$HELPER_DIR/scripts/fluidd.sh"; fi;;
-      3) if confirm_action; then sh "$HELPER_DIR/scripts/mainsail.sh"; fi;;
-      4) if confirm_action; then sh "$HELPER_DIR/scripts/entware.sh"; fi;;
-      5) if confirm_action; then sh "$HELPER_DIR/scripts/gcode_shell_command.sh"; fi;;
-      6) if confirm_action; then sh "$HELPER_DIR/scripts/improved_shapers.sh"; fi;;
+      1) if confirm_action; then "$HELPER_DIR/scripts/moonraker_nginx.sh"; fi;;
+      2) if confirm_action; then "$HELPER_DIR/scripts/fluidd.sh"; fi;;
+      3) if confirm_action; then "$HELPER_DIR/scripts/mainsail.sh"; fi;;
+      4) if confirm_action; then "$HELPER_DIR/scripts/entware.sh"; fi;;
+      5) if confirm_action; then "$HELPER_DIR/scripts/gcode_shell_command.sh"; fi;;
+      6) if confirm_action; then "$HELPER_DIR/scripts/improved_shapers.sh"; fi;;
       8) if confirm_action; then fix_e5m; fi;;
       b|B) return ;;
     esac
@@ -171,12 +174,12 @@ menu_remove() {
     printf "Выберите действие: "
     read choice
     case "$choice" in
-      1) if confirm_action; then sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; fi;;
-      2) if confirm_action; then sh "$HELPER_DIR/scripts/fluidd.sh" remove; fi;;
-      3) if confirm_action; then sh "$HELPER_DIR/scripts/mainsail.sh" remove; fi;;
-      4) if confirm_action; then sh "$HELPER_DIR/scripts/entware.sh" remove; fi;;
-      5) if confirm_action; then sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; fi;;
-      6) if confirm_action; then sh "$HELPER_DIR/scripts/improved_shapers.sh" remove; fi;;
+      1) if confirm_action; then "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; fi;;
+      2) if confirm_action; then "$HELPER_DIR/scripts/fluidd.sh" remove; fi;;
+      3) if confirm_action; then "$HELPER_DIR/scripts/mainsail.sh" remove; fi;;
+      4) if confirm_action; then "$HELPER_DIR/scripts/entware.sh" remove; fi;;
+      5) if confirm_action; then "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; fi;;
+      6) if confirm_action; then "$HELPER_DIR/scripts/improved_shapers.sh" remove; fi;;
       7) if confirm_action; then restore_e5m; fi;;
       b|B) return ;;
     esac
