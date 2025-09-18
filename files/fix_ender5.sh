@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v2.1
+#   Tom Tomich Script v2.4
 #   Helper & Fix Tool for Ender-5 Max
 # ================================
 
@@ -20,180 +20,74 @@ show_header() {
   clear
   echo -e "${BLUE}#############################################${RESET}"
   echo -e "${BLUE}#                                           #${RESET}"
-  echo -e "${BLUE}#         🚀 Tom Tomich Script v2.1         #${RESET}"
+  echo -e "${BLUE}#         🚀 Tom Tomich Script v2.4         #${RESET}"
   echo -e "${BLUE}#   Helper & Fix Tool for Ender-5 Max       #${RESET}"
   echo -e "${BLUE}#                                           #${RESET}"
   echo -e "${BLUE}#############################################${RESET}"
   echo ""
 }
 
-# Универсальная функция перезапуска Klipper (как в helper-script: init.d / service / systemctl / Moonraker)
 restart_klipper() {
   echo -e "${YELLOW}🔄 Попытка перезапуска Klipper...${RESET}"
-  # 1) init.d
   if [[ -x "/etc/init.d/klipper" ]]; then
-    /etc/init.d/klipper restart && { echo -e "${GREEN}✅ Klipper перезапущен через /etc/init.d/klipper${RESET}"; return 0; }
+    /etc/init.d/klipper restart && { echo -e "${GREEN}✅ Klipper перезапущен (/etc/init.d)${RESET}"; return; }
   fi
-
-  # 2) service
   if command -v service >/dev/null 2>&1; then
-    service klipper restart && { echo -e "${GREEN}✅ Klipper перезапущен через service${RESET}"; return 0; }
+    service klipper restart && { echo -e "${GREEN}✅ Klipper перезапущен (service)${RESET}"; return; }
   fi
-
-  # 3) systemctl (если доступен)
   if command -v systemctl >/dev/null 2>&1; then
-    if sudo systemctl restart klipper >/dev/null 2>&1; then
-      echo -e "${GREEN}✅ Klipper перезапущен через systemctl${RESET}"
-      return 0
-    fi
+    sudo systemctl restart klipper && { echo -e "${GREEN}✅ Klipper перезапущен (systemctl)${RESET}"; return; }
   fi
-
-  # 4) Moonraker API (fallback)
   if command -v curl >/dev/null 2>&1; then
-    curl -s -X POST "http://localhost:7125/printer/restart" >/dev/null 2>&1
-    if [[ $? -eq 0 ]]; then
-      echo -e "${GREEN}✅ Klipper перезапущен через Moonraker API${RESET}"
-      return 0
-    fi
+    curl -s -X POST "http://localhost:7125/printer/restart" && { echo -e "${GREEN}✅ Klipper перезапущен (Moonraker API)${RESET}"; return; }
   fi
-
   echo -e "${YELLOW}⚠️ Не удалось автоматически перезапустить Klipper. Выполните перезапуск вручную.${RESET}"
-  return 1
 }
 
-# ---------- Установки / дополнительные функции ----------
+# ---------- Helper Script интеграции ----------
 
-install_moonraker() {
-  echo -e "${YELLOW}📥 Устанавливаем Moonraker...${RESET}"
-  cd /usr/share || { echo -e "${YELLOW}❗ Не могу перейти в /usr/share${RESET}"; return 1; }
-  if [[ -d "moonraker" ]]; then
-    echo -e "${YELLOW}▶ moonraker уже существует, обновляю...${RESET}"
-    cd moonraker && git pull || true
-  else
-    git clone https://github.com/Arksine/moonraker moonraker || { echo -e "${YELLOW}❗ git clone failed${RESET}"; return 1; }
-  fi
-  cd moonraker || return 1
-  if [[ -x "./scripts/install-moonraker.sh" ]]; then
-    ./scripts/install-moonraker.sh || echo -e "${YELLOW}⚠️ Скрипт установки вернул ошибку${RESET}"
-  else
-    echo -e "${YELLOW}⚠️ install script not found, проверьте репозиторий${RESET}"
-  fi
-  echo -e "${GREEN}✅ Moonraker установлен/обновлён.${RESET}"
-  restart_klipper
-}
+install_moonraker() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/01-install-moonraker.sh" | sh; }
+remove_moonraker() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/01-remove-moonraker.sh" | sh; }
 
-install_fluidd() {
-  echo -e "${YELLOW}📥 Устанавливаем Fluidd...${RESET}"
-  mkdir -p /usr/share/nginx/html/fluidd
-  TMPZIP="/tmp/fluidd.zip"
-  wget -q --no-check-certificate "https://github.com/fluidd-core/fluidd/releases/latest/download/fluidd.zip" -O "$TMPZIP" || { echo -e "${YELLOW}❗ Скачивание fluidd.zip не удалось${RESET}"; return 1; }
-  unzip -o "$TMPZIP" -d /usr/share/nginx/html/fluidd >/dev/null 2>&1 || true
-  rm -f "$TMPZIP"
-  echo -e "${GREEN}✅ Fluidd установлен.${RESET}"
-}
+install_fluidd() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/02-install-fluidd.sh" | sh; }
+remove_fluidd() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/02-remove-fluidd.sh" | sh; }
 
-install_mainsail() {
-  echo -e "${YELLOW}📥 Устанавливаем Mainsail...${RESET}"
-  mkdir -p /usr/share/nginx/html/mainsail
-  TMPZIP="/tmp/mainsail.zip"
-  wget -q --no-check-certificate "https://github.com/mainsail-crew/mainsail/releases/latest/download/mainsail.zip" -O "$TMPZIP" || { echo -e "${YELLOW}❗ Скачивание mainsail.zip не удалось${RESET}"; return 1; }
-  unzip -o "$TMPZIP" -d /usr/share/nginx/html/mainsail >/dev/null 2>&1 || true
-  rm -f "$TMPZIP"
-  echo -e "${GREEN}✅ Mainsail установлен.${RESET}"
-}
+install_mainsail() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/03-install-mainsail.sh" | sh; }
+remove_mainsail() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/03-remove-mainsail.sh" | sh; }
 
-install_entware() {
-  echo -e "${YELLOW}📥 Устанавливаем Entware...${RESET}"
-  wget -q --no-check-certificate -O - http://bin.entware.net/armv7sf-k3.2/installer/generic.sh | sh || { echo -e "${YELLOW}❗ Установка Entware вернула ошибку${RESET}"; return 1; }
-  # добавить PATH в профиль
-  if ! grep -q "/opt/bin" /etc/profile 2>/dev/null; then
-    echo 'export PATH=$PATH:/opt/bin:/opt/sbin' >> /etc/profile || true
-  fi
-  echo -e "${GREEN}✅ Entware установлен.${RESET}"
-}
+install_entware() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/04-install-entware.sh" | sh; }
+remove_entware() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/04-remove-entware.sh" | sh; }
 
-enable_gcode_shell_command() {
-  echo -e "${YELLOW}⚙️ Включаем Klipper Gcode Shell Command...${RESET}"
+enable_gcode_shell_command() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/05-enable-gcode-shell-command.sh" | sh; }
+disable_gcode_shell_command() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/05-disable-gcode-shell-command.sh" | sh; }
 
-  # Добавляем [gcode_shell_command beep] в printer.cfg (если нет)
-  if ! grep -qF "[gcode_shell_command beep]" "$PRINTER_CFG"; then
-    cat <<'EOF' >> "$PRINTER_CFG"
+install_shaper_calibrations() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/06-install-shaper-calibrations.sh" | sh; }
+remove_shaper_calibrations() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/06-remove-shaper-calibrations.sh" | sh; }
 
-[gcode_shell_command beep]
-command: beep
-timeout: 2
-verbose: False
-EOF
-    echo -e "${YELLOW}➕ Добавлено [gcode_shell_command beep] в $PRINTER_CFG${RESET}"
-  else
-    echo -e "${YELLOW}ℹ️ [gcode_shell_command beep] уже присутствует в $PRINTER_CFG${RESET}"
-  fi
+# ---------- Исправления Ender-5 Max ----------
 
-  # Добавляем макрос BEEP в gcode_macro.cfg (если нет)
-  if ! grep -qF "[gcode_macro BEEP]" "$MACRO_CFG"; then
-    cat <<'EOF' >> "$MACRO_CFG"
-
-[gcode_macro BEEP] # звук бип.
-description: Play a sound
-gcode:
-  RUN_SHELL_COMMAND CMD=beep
-EOF
-    echo -e "${YELLOW}➕ Добавлен макрос BEEP в $MACRO_CFG${RESET}"
-  else
-    echo -e "${YELLOW}ℹ️ Макрос BEEP уже присутствует в $MACRO_CFG${RESET}"
-  fi
-
-  restart_klipper
-  echo -e "${GREEN}✅ Gcode Shell Command включен.${RESET}"
-}
-
-install_shaper_calibrations() {
-  echo -e "${YELLOW}📥 Устанавливаем Improved Shaper Calibrations...${RESET}"
-  cd /usr/share || { echo -e "${YELLOW}❗ Не могу перейти в /usr/share${RESET}"; return 1; }
-  if [[ -d "shaper-calibrations" ]]; then
-    cd shaper-calibrations && git pull || true
-  else
-    git clone https://github.com/Guilouz/klipper-shaper-calibrations shaper-calibrations || { echo -e "${YELLOW}❗ git clone failed${RESET}"; return 1; }
-  fi
-  echo -e "${GREEN}✅ Improved Shaper Calibrations установлены.${RESET}"
-}
-
-# ---------- Fixes for Ender-5 Max ----------
 fix_e5m() {
-  # проверка файлов
-  if [[ ! -f "$PRINTER_CFG" || ! -f "$MACRO_CFG" ]]; then
-    echo -e "${YELLOW}❗ Один из конфигов не найден. Проверьте: ${PRINTER_CFG}, ${MACRO_CFG}${RESET}"
-    return 1
-  fi
-
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
-  echo -e "${YELLOW}📂 Созданы бэкапы:${RESET}"
-  echo -e "   $PRINTER_BAK"
-  echo -e "   $MACRO_BAK"
+  echo -e "${YELLOW}📂 Созданы бэкапы.${RESET}"
 
-  # 1) Height_module2 -> _Height_module2
+  # --- printer.cfg ---
   sed -i 's/^\[output_pin Height_module2\]/[output_pin _Height_module2]/' "$PRINTER_CFG"
-
-  # 2) Удаляем старые light_pin / MainBoardFan / fan0..fan1 / multi_pin / controller_fan
-  for pat in "output_pin light_pin" "output_pin MainBoardFan" \
-             "output_pin fan0" "output_pin en_fan0" "output_pin fan1" "output_pin en_fan1" \
-             "multi_pin part_fans" "multi_pin en_part_fans" "fan_generic part" "controller_fan MCU_fan"
-  do
+  for pat in "output_pin light_pin" "output_pin MainBoardFan" "output_pin fan0" "output_pin en_fan0" \
+             "output_pin fan1" "output_pin en_fan1" "multi_pin part_fans" "multi_pin en_part_fans" \
+             "fan_generic part" "controller_fan MCU_fan"; do
     sed -i "/^\[$pat\]/,/^$/d" "$PRINTER_CFG"
     sed -i "/^\[$pat\]/,/^\[/d" "$PRINTER_CFG"
   done
-
-  # 3) Добавляем новые блоки в printer.cfg
   cat <<'EOF' >> "$PRINTER_CFG"
 
-[output_pin light_pin] # освещение камеры принтера. косяк прошивки креалити.
+[output_pin light_pin]
 pin: !PC0
 pwm: True
 cycle_time: 0.010
 value: 1.0
 
-[controller_fan MCU_fan] # включаем обдув после включения драйверов
+[controller_fan MCU_fan]
 pin: PB1
 max_power: 1.0
 fan_speed: 1
@@ -213,22 +107,19 @@ cycle_time: 0.0100
 hardware_pwm: false
 EOF
 
-  # 4) gcode_macro.cfg — удаляем старые макросы и переменные
+  # --- gcode_macro.cfg ---
   for pat in "gcode_macro M106" "gcode_macro M107" "gcode_macro TURN_OFF_FANS" "gcode_macro TURN_ON_FANS" \
              "firmware_retraction" "gcode_shell_command beep" "gcode_macro BEEP" \
-             "delayed_gcode light_init" "exclude_object" "gcode_macro PID_BED" "gcode_macro PID_HOTEND"
-  do
+             "delayed_gcode light_init" "exclude_object" "gcode_macro PID_BED" "gcode_macro PID_HOTEND"; do
     sed -i "/^\[$pat\]/,/^$/d" "$MACRO_CFG"
     sed -i "/^\[$pat\]/,/^\[/d" "$MACRO_CFG"
   done
   sed -i '/^variable_fan0_min:/d' "$MACRO_CFG"
   sed -i '/^variable_fan1_min:/d' "$MACRO_CFG"
-
-  # 5) Добавляем необходимые блоки в gcode_macro.cfg (без дублирования beep в неправильном месте)
   cat <<'EOF' >> "$MACRO_CFG"
 
 [firmware_retraction]
-retract_length: 0.45 # безопасное значение
+retract_length: 0.45
 retract_speed: 30
 unretract_extra_length: 0
 unretract_speed: 30
@@ -256,36 +147,28 @@ gcode:
   M107
 
 [gcode_macro M106]
-description: Set Fan Speed. P0 for part
 gcode:
   {% set fan_id = params.P|default(0)|int %}
   {% if fan_id == 0 %}
     {% set speed_param = params.S|default(255)|int %}
-    {% if speed_param > 0 %}
-      {% set speed = (speed_param|float / 255) %}
-    {% else %}
-      {% set speed = 0 %}
-    {% endif %}
+    {% set speed = (speed_param|float / 255) if speed_param > 0 else 0 %}
     SET_FAN_SPEED FAN=part SPEED={speed}
   {% endif %}
 
 [gcode_macro M107]
-description: Set Fan Off. P0 for part
 gcode:
   SET_FAN_SPEED FAN=part SPEED=0
 
 [gcode_macro TURN_OFF_FANS]
-description: Stop chamber, auxiliary and part fan
 gcode:
-    SET_FAN_SPEED FAN=part SPEED=0
+  SET_FAN_SPEED FAN=part SPEED=0
 
 [gcode_macro TURN_ON_FANS]
-description: Turn on chamber, auxiliary and part fan
 gcode:
-    SET_FAN_SPEED FAN=part SPEED=1
+  SET_FAN_SPEED FAN=part SPEED=1
 EOF
 
-  # 6) Убедимся, что [gcode_shell_command beep] находится в printer.cfg (как в helper-script)
+  # добавляем beep в printer.cfg
   if ! grep -qF "[gcode_shell_command beep]" "$PRINTER_CFG"; then
     cat <<'EOF' >> "$PRINTER_CFG"
 
@@ -294,19 +177,17 @@ command: beep
 timeout: 2
 verbose: False
 EOF
-    echo -e "${YELLOW}➕ Добавлено [gcode_shell_command beep] в $PRINTER_CFG${RESET}"
   fi
 
-  # 7) И макрос BEEP в gcode_macro.cfg (если нет) — ставим корректный макрос
+  # добавляем макрос BEEP
   if ! grep -qF "[gcode_macro BEEP]" "$MACRO_CFG"; then
     cat <<'EOF' >> "$MACRO_CFG"
 
-[gcode_macro BEEP] # звук бип.
+[gcode_macro BEEP]
 description: Play a sound
 gcode:
   RUN_SHELL_COMMAND CMD=beep
 EOF
-    echo -e "${YELLOW}➕ Добавлен макрос BEEP в $MACRO_CFG${RESET}"
   fi
 
   echo -e "${GREEN}✅ Исправления для Ender-5 Max применены.${RESET}"
@@ -317,7 +198,7 @@ restore_e5m() {
   if [[ -f "$PRINTER_BAK" && -f "$MACRO_BAK" ]]; then
     cp -p "$PRINTER_BAK" "$PRINTER_CFG"
     cp -p "$MACRO_BAK" "$MACRO_CFG"
-    echo -e "${YELLOW}♻️  Конфиги Ender-5 Max восстановлены.${RESET}"
+    echo -e "${YELLOW}♻️ Конфиги Ender-5 Max восстановлены.${RESET}"
     restart_klipper
     echo -e "${GREEN}✅ Восстановление завершено.${RESET}"
   else
@@ -326,14 +207,20 @@ restore_e5m() {
 }
 
 # ---------- Меню ----------
+
 show_header
 echo -e "${GREEN}1) Установить Moonraker${RESET}"
+echo -e "${GREEN}1r) Удалить Moonraker${RESET}"
 echo -e "${GREEN}2) Установить Fluidd${RESET}"
+echo -e "${GREEN}2r) Удалить Fluidd${RESET}"
 echo -e "${GREEN}3) Установить Mainsail${RESET}"
+echo -e "${GREEN}3r) Удалить Mainsail${RESET}"
 echo -e "${GREEN}4) Установить Entware${RESET}"
+echo -e "${GREEN}4r) Удалить Entware${RESET}"
 echo -e "${GREEN}5) Включить Klipper Gcode Shell Command${RESET}"
+echo -e "${GREEN}5r) Выключить Klipper Gcode Shell Command${RESET}"
 echo -e "${GREEN}6) Установить Improved Shapers Calibrations${RESET}"
-echo -e "${GREEN}7) (резерв)${RESET}"
+echo -e "${GREEN}6r) Удалить Improved Shapers Calibrations${RESET}"
 echo -e "${GREEN}8) Исправления конфигов для Ender-5 Max${RESET}"
 echo -e "${GREEN}9) Откатить исправления Ender-5 Max${RESET}"
 echo -e "${GREEN}q) Выйти${RESET}"
@@ -342,15 +229,19 @@ read -r choice
 
 case "$choice" in
   1) install_moonraker ;;
+  1r) remove_moonraker ;;
   2) install_fluidd ;;
+  2r) remove_fluidd ;;
   3) install_mainsail ;;
+  3r) remove_mainsail ;;
   4) install_entware ;;
+  4r) remove_entware ;;
   5) enable_gcode_shell_command ;;
+  5r) disable_gcode_shell_command ;;
   6) install_shaper_calibrations ;;
-  7) echo -e "${YELLOW}Резервный пункт.${RESET}" ;;
+  6r) remove_shaper_calibrations ;;
   8) fix_e5m ;;
   9) restore_e5m ;;
   q|Q) echo -e "${YELLOW}🚪 Выход.${RESET}" ;;
   *) echo -e "${YELLOW}❓ Неверный выбор${RESET}" ;;
 esac
-
