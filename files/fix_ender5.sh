@@ -1,9 +1,17 @@
 #!/bin/bash
 set -u
 
-# fix_ender5.sh
-# Удаляет старые блоки и вставляет новые корректные блоки в printer.cfg и gcode_macro.cfg
-# Путь к файлам жёстко задан:
+# fix_ender5.sh — обновлённая версия
+# Делает:
+#  - создает бэкапы printer.cfg.bak и gcode_macro.cfg.bak
+#  - удаляет старые проблемные блоки (несколько стратегий)
+#  - добавляет новые блоки (light_pin, controller_fan, multi_pin, новые макросы)
+#  - добавлена вставка блока firmware_retraction, BEEP, PID_BED, PID_HOTEND и т.д.
+#
+# Использование:
+#   ./fix_ender5.sh        # применить правки
+#   ./fix_ender5.sh --restore   # восстановить из .bak
+
 PRINTER_CFG="/usr/data/printer_data/config/printer.cfg"
 MACRO_CFG="/usr/data/printer_data/config/gcode_macro.cfg"
 PRINTER_BAK="${PRINTER_CFG}.bak"
@@ -32,7 +40,7 @@ if [[ "${1:-}" == "--restore" ]]; then
   fi
 fi
 
-# Проверки
+# Проверки наличия файлов
 if [[ ! -f "$PRINTER_CFG" ]]; then
   echo "❗ Не найден $PRINTER_CFG"
   exit 3
@@ -58,8 +66,8 @@ sed -i 's/^\[output_pin Height_module2\]/[output_pin _Height_module2]/' "$PRINTE
   && echo "🔁 Заменён [output_pin Height_module2] -> [output_pin _Height_module2]"
 
 # 2) Удаляем любые старые определения light_pin
-sed -i '/^\[output_pin light_pin\]/,/^$/d' "$PRINTER_CFG"   # удаляем до пустой строки (если есть)
-sed -i '/^\[output_pin light_pin\]/,/^\[/d' "$PRINTER_CFG" # запасной вариант — до следующего заголовка
+sed -i '/^\[output_pin light_pin\]/,/^$/d' "$PRINTER_CFG"
+sed -i '/^\[output_pin light_pin\]/,/^\[/d' "$PRINTER_CFG"
 echo "🗑 Удалены старые блоки [output_pin light_pin] (если были)"
 
 # 3) Удаляем старые определения MainBoardFan (если есть)
@@ -135,7 +143,7 @@ EOF
 echo "➕ Добавлены [multi_pin part_fans], [multi_pin en_part_fans], [fan_generic part]"
 
 # ---------------------------
-# gcode_macro.cfg — УДАЛЕНИЕ старых макросов
+# gcode_macro.cfg — УДАЛЕНИЕ старых макросов и блоков, которые мы собираемся добавить
 # ---------------------------
 
 # Удаляем старые определения M106 и M107 и связанные (по пустой строке и запасной по следующему заголовку)
@@ -155,10 +163,62 @@ sed -i '/^variable_fan0_min:/d' "$MACRO_CFG"
 sed -i '/^variable_fan1_min:/d' "$MACRO_CFG"
 echo "🗑 Удалены variable_fan0_min / variable_fan1_min (если были)"
 
+# Удаляем/очищаем возможные старые блоки которые добавляем ниже:
+for pat in "firmware_retraction" "gcode_shell_command beep" "gcode_macro BEEP" "delayed_gcode light_init" "exclude_object" "gcode_macro PID_BED" "gcode_macro PID_HOTEND"; do
+  sed -i "/^\[${pat}\]/,/^$/d" "$MACRO_CFG"
+  sed -i "/^\[${pat}\]/,/^\[/d" "$MACRO_CFG"
+done
+echo "🗑 Удалены старые блоки firmware_retraction / BEEP / PID_* / и т.п. (если были)"
+
 # ---------------------------
-# gcode_macro.cfg — ДОБАВЛЕНИЕ новых макросов (в конец файла)
+# gcode_macro.cfg — ДОБАВЛЕНИЕ новых блоков (в конец файла)
 # ---------------------------
 
+# 1) Добавляем блок RETRACTION, BEEP, PID и прочее
+cat <<'EOF' >> "$MACRO_CFG"
+
+[firmware_retraction]
+retract_length: 0.45 # безопасное значение для того пластика которым чаще всего печатаете.
+retract_speed: 30
+unretract_extra_length: 0
+unretract_speed: 30
+
+[gcode_shell_command beep]
+command: beep
+timeout: 2
+verbose: False
+
+[gcode_macro BEEP] # звук бип. 
+description: Play a sound
+gcode:
+  RUN_SHELL_COMMAND CMD=beep
+
+[delayed_gcode light_init] 
+initial_duration: 5.01
+gcode:
+  SET_PIN PIN=light_pin VALUE=1
+
+[exclude_object] # исключение обьектов. 
+
+
+[gcode_macro PID_BED]
+gcode:
+  PID_CALIBRATE HEATER=heater_bed TARGET={params.BED_TEMP|default(70)}
+  SAVE_CONFIG
+
+[gcode_macro PID_HOTEND] # и почему его не было. добавил
+description: Start Hotend PID
+gcode:
+  G90
+  G28
+  G1 Z10 F600
+  M106 S255 #S255 
+  PID_CALIBRATE HEATER=extruder TARGET={params.HOTEND_TEMP|default(250)}
+  M107
+EOF
+echo "➕ Добавлен блок firmware_retraction + BEEP + PID_* и сопутствующие"
+
+# 2) Добавляем новые макросы M106/M107 и TURN_OFF/ON_FANS
 cat <<'EOF' >> "$MACRO_CFG"
 
 [gcode_macro M106]
@@ -192,10 +252,12 @@ gcode:
 EOF
 echo "➕ Добавлены новые макросы M106/M107/TURN_OFF_FANS/TURN_ON_FANS"
 
+echo ""
 echo "✅ Все правки внесены. Файлы:"
 echo "   $PRINTER_CFG"
 echo "   $MACRO_CFG"
 echo ""
 echo "Рекомендации:"
-echo "  - Проверьте изменения: diff $PRINTER_BAK $PRINTER_CFG | head -n 100"
+echo "  - Проверьте изменения: diff $PRINTER_BAK $PRINTER_CFG | sed -n '1,200p'"
+echo "  - Проверьте макросы: grep -n \"gcode_macro\" $MACRO_CFG | sed -n '1,200p'"
 echo "  - Перезагрузите Klipper/принтер после правок."
