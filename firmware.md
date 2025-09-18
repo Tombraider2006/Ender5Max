@@ -95,7 +95,25 @@ sh /usr/data/helper-script/helper.sh
 
 ## После установки
 
-немного оживим наш конфиг:
+## NEW 
+### вариант автоматического внесения изменений
+
+1. Переходим в папку с конфигами принтера. Скачиваем и запускаем скрипт fix_ender5.sh с GitHub
+
+```
+cd /usr/data/printer_data/config/
+wget https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_ender5.sh -O fix_ender5.sh
+chmod +x fix_ender5.sh
+./fix_ender5.sh
+```
+3. Если нужно откатить изменения — используем restore
+```
+cd /usr/data/printer_data/config/
+./fix_ender5.sh --restore
+```
+### Устарело 
+<details>немного оживим наш конфиг:<summary>
+
 
 в вебпанели ищем значок слева {...}  в окошке ищем файл `gcode_macro.cfg` открываем его и мотаем в самый низ
 
@@ -189,7 +207,7 @@ kick_start_time: 0
 stepper: stepper_x
 
 ```
-
+</details>
 
 Чтобы подготовить принтер к работе пройдем тесты и запишем их в конфиг, сделать это проще чем кажется. Для этого достаточно скопировать код в консоль вебпанели принтера. тесты будут длится около 10-20 минут, после этого принтер перезагрузится и будет готов к работе.
 
@@ -247,6 +265,7 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 
 
 
+
 ## Посмотреть стоковые файлы конфигурации 
 
 1.2.0.10 [тут](/stock/config_1.2.0.10/)
@@ -265,7 +284,7 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 
 Если вы захотите использовать guppyscreen в SimpleAF то необходимо [повернуть экран на 90 градусов.](https://github.com/Tombraider2006/Ender5Max/blob/main/mans/simpleaf.md#%D0%B2%D1%8B-%D0%BA%D1%83%D0%BF%D0%B8%D0%BB%D0%B8-%D0%B7%D0%B0%D1%88%D0%B8%D0%B2%D0%BA%D1%83-%D0%BA%D0%BE%D1%80%D0%BF%D1%83%D1%81%D0%B0-%D0%B8-%D1%82%D0%B5%D0%BF%D0%B5%D1%80%D1%8C-%D0%BF%D1%80%D0%BE%D0%B2%D0%BE%D0%B4%D0%B0-%D0%BC%D0%B5%D1%88%D0%B0%D1%8E%D1%82-%D0%BE%D1%82%D0%BA%D1%80%D1%8B%D0%B2%D0%B0%D1%82%D1%8C-%D0%B4%D0%B2%D0%B5%D1%80%D1%86%D1%83) вот [**модель**](/mans/Ender5MaxTiltedScreenMount.stl) чтобы закрепить экран в горизонтальном положении. 
 
-### Если получаем ошибку 2069
+### Если получаем ошибку 2069 (уже есть в автоматическом скрипте)
 
 В файле `printer.cfg` находим разделы и удаляем.
 
