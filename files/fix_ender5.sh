@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v3.8
+#   Tom Tomich Script v3.9
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -20,7 +20,7 @@ HELPER_DIR="/usr/data/helper"
 show_header() {
   clear
   printf "%b\n" "${YELLOW}========================================${RESET}"
-  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.8 (Nebula Pad)${RESET}"
+  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.9 (Nebula Pad)${RESET}"
   printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
   printf "%b\n" "${YELLOW}========================================${RESET}"
   echo ""
@@ -45,6 +45,11 @@ prepare_helper() {
     cd "$HELPER_DIR" || exit
     git pull
   fi
+
+  # Подключаем функции из tools.sh (log_action и т.п.)
+  if [ -f "$HELPER_DIR/scripts/tools.sh" ]; then
+    . "$HELPER_DIR/scripts/tools.sh"
+  fi
 }
 
 restart_klipper() {
@@ -64,24 +69,24 @@ is_installed_shell() { grep -q "gcode_shell_command" "$PRINTER_CFG" 2>/dev/null;
 is_installed_shapers() { [ -d "/usr/data/shaper_calibrations" ]; }
 is_installed_e5mfix() { [ -f "$PRINTER_BAK" ] && [ -f "$MACRO_BAK" ]; }
 
-# Вызовы install/remove скриптов Guilouz (оставляем вывод на экране)
-install_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh"; echo; read -p "Нажмите Enter..."; }
-remove_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; echo; read -p "Нажмите Enter..."; }
+# Вызовы install/remove скриптов Guilouz (с tools.sh вывод логов будет виден)
+install_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh"; read -p "Нажмите Enter..."; }
+remove_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; read -p "Нажмите Enter..."; }
 
-install_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh"; echo; read -p "Нажмите Enter..."; }
-remove_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh" remove; echo; read -p "Нажмите Enter..."; }
+install_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh"; read -p "Нажмите Enter..."; }
+remove_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh" remove; read -p "Нажмите Enter..."; }
 
-install_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh"; echo; read -p "Нажмите Enter..."; }
-remove_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh" remove; echo; read -p "Нажмите Enter..."; }
+install_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh"; read -p "Нажмите Enter..."; }
+remove_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh" remove; read -p "Нажмите Enter..."; }
 
-install_entware() { sh "$HELPER_DIR/scripts/entware.sh"; echo; read -p "Нажмите Enter..."; }
-remove_entware() { sh "$HELPER_DIR/scripts/entware.sh" remove; echo; read -p "Нажмите Enter..."; }
+install_entware() { sh "$HELPER_DIR/scripts/entware.sh"; read -p "Нажмите Enter..."; }
+remove_entware() { sh "$HELPER_DIR/scripts/entware.sh" remove; read -p "Нажмите Enter..."; }
 
-install_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh"; echo; read -p "Нажмите Enter..."; }
-remove_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; echo; read -p "Нажмите Enter..."; }
+install_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh"; read -p "Нажмите Enter..."; }
+remove_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; read -p "Нажмите Enter..."; }
 
-install_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh"; echo; read -p "Нажмите Enter..."; }
-remove_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh" remove; echo; read -p "Нажмите Enter..."; }
+install_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh"; read -p "Нажмите Enter..."; }
+remove_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh" remove; read -p "Нажмите Enter..."; }
 
 # ---------- Исправления Ender-5 Max ----------
 fix_e5m() {
