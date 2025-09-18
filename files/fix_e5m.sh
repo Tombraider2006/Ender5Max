@@ -4,7 +4,7 @@ show_menu() {
     clear
     printf "========================================\n"
     printf "🚀 Tom Tomich Script (Ender-5 Max Fix)\n"
-    printf "\033[1;34;5;1mВНИМАНИЕ! Вносить изменения только после установки Helper Script пунктов 1,2,3,4,5,10\033[0m\n"
+    printf "\033[1;34;5;1mВНИМАНИЕ! Вносить изменения только после установки Helper Script пунктов 1,(2 и\или 3),4,5,10\033[0m\n"
     printf "========================================\n"
 
     if [ -f "/usr/data/printer_data/config/gcode_macro.cfg.bak" ] || [ -f "/usr/data/printer_data/config/printer.cfg.bak" ]; then
