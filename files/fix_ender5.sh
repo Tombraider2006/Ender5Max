@@ -2,8 +2,8 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v2.5
-#   Helper & Fix Tool for Ender-5 Max
+#   Tom Tomich Script v2.6
+#   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
 BLUE="\033[1;34m"
@@ -20,8 +20,9 @@ show_header() {
   clear
   echo -e "${BLUE}#############################################${RESET}"
   echo -e "${BLUE}#                                           #${RESET}"
-  echo -e "${BLUE}#         🚀 Tom Tomich Script v2.5         #${RESET}"
+  echo -e "${BLUE}#         🚀 Tom Tomich Script v2.6         #${RESET}"
   echo -e "${BLUE}#   Helper & Fix Tool for Ender-5 Max       #${RESET}"
+  echo -e "${BLUE}#             (Nebula Pad)                  #${RESET}"
   echo -e "${BLUE}#                                           #${RESET}"
   echo -e "${BLUE}#############################################${RESET}"
   echo ""
@@ -46,23 +47,23 @@ restart_klipper() {
 
 # ---------- Helper Script интеграции ----------
 
-install_moonraker() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-moonraker.sh" | sh; }
-remove_moonraker() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-moonraker.sh" | sh; }
+install_moonraker() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-moonraker.sh" | sh; }
+remove_moonraker() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-moonraker.sh" | sh; }
 
-install_fluidd() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-fluidd.sh" | sh; }
-remove_fluidd() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-fluidd.sh" | sh; }
+install_fluidd() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-fluidd.sh" | sh; }
+remove_fluidd() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-fluidd.sh" | sh; }
 
-install_mainsail() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-mainsail.sh" | sh; }
-remove_mainsail() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-mainsail.sh" | sh; }
+install_mainsail() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-mainsail.sh" | sh; }
+remove_mainsail() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-mainsail.sh" | sh; }
 
-install_entware() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-entware.sh" | sh; }
-remove_entware() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-entware.sh" | sh; }
+install_entware() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-entware.sh" | sh; }
+remove_entware() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-entware.sh" | sh; }
 
-enable_gcode_shell_command() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/enable-gcode-shell-command.sh" | sh; }
-disable_gcode_shell_command() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/disable-gcode-shell-command.sh" | sh; }
+enable_gcode_shell_command() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/enable-gcode-shell-command.sh" | sh; }
+disable_gcode_shell_command() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/disable-gcode-shell-command.sh" | sh; }
 
-install_shaper_calibrations() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-shaper-calibrations.sh" | sh; }
-remove_shaper_calibrations() { wget -q --no-check-certificate -O - "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-shaper-calibrations.sh" | sh; }
+install_shaper_calibrations() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/install-shaper-calibrations.sh" | sh; }
+remove_shaper_calibrations() { curl -k -s "https://raw.githubusercontent.com/Guilouz/Creality-Helper-Script/main/scripts/e5m/remove-shaper-calibrations.sh" | sh; }
 
 # ---------- Исправления Ender-5 Max ----------
 
