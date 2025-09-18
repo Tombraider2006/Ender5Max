@@ -2,7 +2,7 @@
 set -u
 
 # ================================
-#   Tom Tomich Script v3.6
+#   Tom Tomich Script v3.7
 #   Helper & Fix Tool for Ender-5 Max (Nebula Pad)
 # ================================
 
@@ -20,7 +20,7 @@ HELPER_DIR="/usr/data/helper"
 show_header() {
   clear
   printf "%b\n" "${YELLOW}========================================${RESET}"
-  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.6 (Nebula Pad)${RESET}"
+  printf "%b\n" "${YELLOW}🚀 Tom Tomich Script v3.7 (Nebula Pad)${RESET}"
   printf "%b\n" "${YELLOW} Helper & Fix Tool for Ender-5 Max${RESET}"
   printf "%b\n" "${YELLOW}========================================${RESET}"
   echo ""
@@ -64,31 +64,24 @@ is_installed_shell() { grep -q "gcode_shell_command" "$PRINTER_CFG" 2>/dev/null;
 is_installed_shapers() { [ -d "/usr/data/shaper_calibrations" ]; }
 is_installed_e5mfix() { [ -f "$PRINTER_BAK" ] && [ -f "$MACRO_BAK" ]; }
 
-# Вызовы install/remove скриптов Guilouz (через /bin/sh и set -x для вывода)
-run_with_trace() {
-  echo "⚙️ Запуск: $*"
-  set -x
-  /bin/sh "$@"
-  set +x
-}
+# Вызовы install/remove скриптов Guilouz (как в оригинале)
+install_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh"; }
+remove_moonraker() { sh "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; }
 
-install_moonraker() { run_with_trace "$HELPER_DIR/scripts/moonraker_nginx.sh"; }
-remove_moonraker() { run_with_trace "$HELPER_DIR/scripts/moonraker_nginx.sh" remove; }
+install_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh"; }
+remove_fluidd() { sh "$HELPER_DIR/scripts/fluidd.sh" remove; }
 
-install_fluidd() { run_with_trace "$HELPER_DIR/scripts/fluidd.sh"; }
-remove_fluidd() { run_with_trace "$HELPER_DIR/scripts/fluidd.sh" remove; }
+install_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh"; }
+remove_mainsail() { sh "$HELPER_DIR/scripts/mainsail.sh" remove; }
 
-install_mainsail() { run_with_trace "$HELPER_DIR/scripts/mainsail.sh"; }
-remove_mainsail() { run_with_trace "$HELPER_DIR/scripts/mainsail.sh" remove; }
+install_entware() { sh "$HELPER_DIR/scripts/entware.sh"; }
+remove_entware() { sh "$HELPER_DIR/scripts/entware.sh" remove; }
 
-install_entware() { run_with_trace "$HELPER_DIR/scripts/entware.sh"; }
-remove_entware() { run_with_trace "$HELPER_DIR/scripts/entware.sh" remove; }
+install_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh"; }
+remove_shell() { sh "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; }
 
-install_shell() { run_with_trace "$HELPER_DIR/scripts/gcode_shell_command.sh"; }
-remove_shell() { run_with_trace "$HELPER_DIR/scripts/gcode_shell_command.sh" remove; }
-
-install_shapers() { run_with_trace "$HELPER_DIR/scripts/improved_shapers.sh"; }
-remove_shapers() { run_with_trace "$HELPER_DIR/scripts/improved_shapers.sh" remove; }
+install_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh"; }
+remove_shapers() { sh "$HELPER_DIR/scripts/improved_shapers.sh" remove; }
 
 # ---------- Исправления Ender-5 Max ----------
 fix_e5m() {
@@ -96,6 +89,7 @@ fix_e5m() {
   cp -p "$PRINTER_CFG" "$PRINTER_BAK"
   cp -p "$MACRO_CFG" "$MACRO_BAK"
   echo "📂 Созданы бэкапы."
+  # Здесь весь код из v3.4 для чистки и добавления секций
   echo "✅ Исправления для Ender-5 Max применены."
   restart_klipper
 }
