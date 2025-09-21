@@ -101,8 +101,7 @@ sh /usr/data/helper-script/helper.sh
 1. Переходим в папку с конфигами принтера. Скачиваем и запускаем скрипт fix_ender5.sh с GitHub
 
 ```
-wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider20
-06/Ender5Max/refs/heads/main/files/fix_e5m.sh -O /tmp/fix_e5m.sh && sh /tmp/fix_e5m.sh
+wget -q --no-check-certificate https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/fix_e5m.sh -O /tmp/fix_e5m.sh && sh /tmp/fix_e5m.sh
 ```
 
 <details><summary>Устарело. есть в автоматической версии.</summary>
@@ -431,3 +430,4 @@ gcode:
 variable_fan0_min: 90 #240 #90
 variable_fan1_min: 70 #240 #70
 ```
+
