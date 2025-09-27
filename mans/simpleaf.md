@@ -242,6 +242,18 @@ RESPOND TYPE=command MSG="Retract speed set to [retraction_speed]/[deretraction_
 END_PRINT
 
 ```
+ если после установки Simple AF печатает не пойми как и летят "Unknown command G2, G3, G10, G11", то вставить прям в printer.cfg куда-нибудь в конец это:
+
+ ```
+[gcode_arcs]
+
+[firmware_retraction]
+retract_length: 0.45 # безопасное значение для того пластика которым чаще всего печатаете.
+retract_speed: 30
+unretract_extra_length: 0
+unretract_speed: 30
+
+ ```
 
 ### вы купили зашивку корпуса и теперь провода мешают открывать дверцу.
 
