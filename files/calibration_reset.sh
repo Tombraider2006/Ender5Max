@@ -7,7 +7,7 @@ if [ -f "$FILE" ]; then
     mv "$FILE" "$BACKUP"
 fi
 
-echo "иди жми крестики"
+echo "иди жми крестики калибровки"
 sleep 2
 reboot
 
