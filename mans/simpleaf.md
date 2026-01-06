@@ -291,7 +291,7 @@ wget --no-check-certificate -O calibration_reset.sh https://raw.githubuserconten
 
 чтобы принтер не шумел обдувом материнской платы при простое.
 
-в файле `fan_control.cfg` **надо заменить** раздел `controller_fan`. старый стираем этот вставляем.
+в файле `fan_control.cfg` **надо заменить** раздел `[static_digital_output mcu_fan_always_on]`. старый стираем этот вставляем.
 
 ```
 [controller_fan MCU_fan] # включаем обдув после включения драйверов
@@ -343,4 +343,5 @@ pin: virtual_pin:BED_WARP_STABILISE_pin
 value: 0
 
 ```
+
 
