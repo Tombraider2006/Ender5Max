@@ -263,46 +263,24 @@ unretract_speed: 30
 ![](/images/door_lock_screen.png)
 
 
-### Сейчас править можно через флюид. для удаления калибровки удалите файл /usr/data/guppyscreen/calibration.json
+### Смена ориентации экрана:
 
-Для этого надо поменять ориентацию в файле /usr/data/guppyscreen/guppyscreen.json на 0 и убрать данные о калибровке. 
+1. в файлах флюида находим grumpyscreen.ini
 
-Перед внесением измененний сделайте резервную копию своего файла!
+в нем ищем параметр:
 
-<details><summary>Вариант №1</summary>
-
-`"display_rotate": 2,` - находим строку и меняем на 0 значение.
+`"display_rotate": 2,` - находим строку и меняем значение на 0.
 
 
-`"touch_calibration_coeff"` и удаляем его и все данные за ним до следующего параметра.
-
-перезагружаемся и выполняем калибровку экрана 
-
-</details>
-
-<details><summary>Вариант №2 простой</summary>
-
-В консоль ssh копируем следующие команды. 
+2. убрать данные о калибровки просто запустить скрипт из консоли **ssh**:
 
 ```
-cd /usr/data/guppyscreen/
-mv guppyscreen.json guppyscreen.json.bak
-wget -P /usr/data/guppyscreen/ https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/guppyscreen.json
-chmod 644 guppyscreen.json
+wget --no-check-certificate -O calibration_reset.sh https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/calibration_reset.sh && chmod +x calibration_reset.sh && ./calibration_reset.sh
 
 ```
-Пояснения к командам:
 
-`cd /usr/data/guppyscreen/` переходим в нужный каталог.
+3. **Перезагружаемся и проводим калибровку экрана.**
 
-`mv guppyscreen.json guppyscreen.json.bak` делаем бекап нашего файла.
-
-`wget -P /usr/data/guppyscreen/ и тд` скачиваем в каталог файл преднастроенный.
-
-`chmod 644 guppyscreen.json` выдаем права на чтение и запись.
-
-**Перезагружаемся и проводим калибровку экрана.**
-</details>
 
 ![](/images/door_unlock_screen.png)
 
@@ -365,3 +343,4 @@ pin: virtual_pin:BED_WARP_STABILISE_pin
 value: 0
 
 ```
+
