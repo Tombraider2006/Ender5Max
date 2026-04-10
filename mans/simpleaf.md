@@ -264,14 +264,7 @@ unretract_speed: 30
 `"display_rotate": 2,` - находим строку и меняем значение на 0.
 
 
-2. убрать данные о калибровки просто запустить скрипт из консоли **ssh**:
-
-```
-wget --no-check-certificate -O calibration_reset.sh https://raw.githubusercontent.com/Tombraider2006/Ender5Max/refs/heads/main/files/calibration_reset.sh && chmod +x calibration_reset.sh && ./calibration_reset.sh
-
-```
-
-3. **Перезагружаемся и проводим калибровку экрана.**
+2. **Перезагружаемся и проводим калибровку экрана.**
 
 
 ![](/images/door_unlock_screen.png)
