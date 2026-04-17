@@ -112,6 +112,13 @@ git clone https://github.com/pellcorp/creality.git /usr/data/pellcorp
 sync
 
 ```
+**Альтернативный сервер** если идут ошибки по недоступности изза РКН
+
+```
+git config --global http.sslVerify false
+git clone git://tomich.fun/creality.git /usr/data/pellcorp
+sync
+```
 
 ### Запускаем установщик
 
