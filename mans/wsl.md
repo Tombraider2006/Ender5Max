@@ -182,10 +182,15 @@ CARTO_DEV=$(ls /dev/serial/by-id/usb-* | grep -E "IDM|Cartographer" | head -1) &
 **Что в данной команде.**
 
 Устройство работает как usb-Cartographer
+
 Скрипт делает enter_bootloader
+
 Устройство переподключается как usb-katapult
+
 Windows автоматически делает attach в WSL
+
 Скрипт ловит новый /dev/serial/by-id
+
 Прошивка через Katapult
 
 
