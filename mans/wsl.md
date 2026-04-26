@@ -76,8 +76,16 @@ usbipd bind --busid 1-2
 2. Обратите внимание, что до тех пор, пока USB-устройство подключено к WSL, оно не может использоваться Windows. После подключения к WSL USB-устройство может использоваться любым дистрибутивом, работающим как WSL 
 3. Убедитесь, что устройство подключено с помощью `usbipd list`. В командной строке WSL выполните команду lsusb , чтобы убедиться, что USB-устройство отображается и может взаимодействовать с помощью средств Linux.
 
+*Если например при выводе*:
+
 ```
-usbipd attach --wsl --busid <busid>
+BUSID  VID:PID    DEVICE
+1-4    1d50:614e  Cartographer
+```
+то вписываем 1-4 в команде. **Внимание номер должен быть ваш а не из примера!**
+
+```
+usbipd wsl attach --busid 1-4 --auto-attach
 ```
 
 *не забываем заменить `<busid>` на свое значение*
@@ -96,7 +104,7 @@ wsl.exe -d Ubuntu-24.04
 и повторяем попытку запуска в предыдущем окне
 
 ```
-usbipd attach --wsl --busid <busid>
+usbipd wsl attach --busid <ваш номер> --auto-attach
 ```
 
 *не забываем заменить `<busid>` на свое значение*
@@ -157,40 +165,29 @@ git reset --hard origin/master
 virtualenv --system-site-packages $HOME/klippy-env
 $HOME/klippy-env/bin/pip3 install -r $HOME/klipper/scripts/klippy-requirements.txt
 ```
-### Снова включаем usb 
 
-Дело в том что когда мы переключили наше устройство в режим загрузки оно переподключилось и сменило COM-порт. Поэтому нам снова надо его подключить к подсистеме linux
-```
-usbipd list
-```
-смотрим как наше устройство отображается. вероятнее всего тот же USBID но возможны варианты
-
-```
-usbipd bind --busid <busid>
-```
-в соседнем окошке с правами администратора включаем 
-
-```
-usbipd attach --wsl --busid <busid>
-```
-
-*не забываем заменить `<busid>` на свое значение*
-
-проверяем в окошке с включенным линуксом 
+**проверяем что все сделано правильно:**
 
 ```
 lsusb
 ```
-что у нас появилось наше устройство
+должен появится вывод что то типа `1d50:614e` в списке id
 
-
-#### Включить загрузчик
+### Прошивка 
 
 ```
-CARTO_DEV=$(ls /dev/serial/by-id/usb-* | grep "IDM\|Cartographer" | head -1)
-cd $HOME/klipper/scripts
-sudo -E $HOME/klippy-env/bin/python -c "import flash_usb as u; u.enter_bootloader('$CARTO_DEV')"
+CARTO_DEV=$(ls /dev/serial/by-id/usb-* | grep -E "IDM|Cartographer" | head -1) && cd $HOME/klipper/scripts && sudo -E $HOME/klippy-env/bin/python -c "import flash_usb as u; u.enter_bootloader('$CARTO_DEV')" && echo "⏳ Ждём переподключение устройства..." && sleep 3 && for i in {1..20}; do KATAPULT_DEV=$(ls /dev/serial/by-id/usb-katapult* 2>/dev/null) && [ -n "$KATAPULT_DEV" ] && break; sleep 0.5; done && sudo -E $HOME/klippy-env/bin/python $HOME/klipper/lib/katapult/flashtool.py -f $HOME/cartographer-klipper/firmware/v2-v3/survey/5.1.0/Survey_Cartographer_K1_USB_8kib_offset.bin -d $KATAPULT_DEV
 ```
+
+**Что в данной команде.**
+
+Устройство работает как usb-Cartographer
+Скрипт делает enter_bootloader
+Устройство переподключается как usb-katapult
+Windows автоматически делает attach в WSL
+Скрипт ловит новый /dev/serial/by-id
+Прошивка через Katapult
+
 
 **Предупреждение**
 
