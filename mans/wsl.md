@@ -195,7 +195,7 @@ Windows автоматически делает attach в WSL
 
 
 
-Вы должны увидеть следующий вывод:
+Вы должны увидеть примерно такой вывод:
 
 ```
 Connecting to Serial Device /dev/serial/by-id/usb-katapult_stm32f042x6_2F003D001653584833373720-if00, baud 250000
