@@ -194,45 +194,33 @@ Windows автоматически делает attach в WSL
 Прошивка через Katapult
 
 
-**Предупреждение**
-
-Если вы получили сообщение типа `ls: cannot access '/dev/serial/by-id/usb-*': No such file or directory`, это означает, что  ваш кабель Carto неправильно подключен.
-
-Вы должны увидеть сообщение вроде:
-
-``
-Entering bootloader on /dev/serial/by-id/usb-Cartographer_614e_16000C000F43304253373820-if00
-``
-
-Прошивка
-
-```
-CATAPULT_DEV=$(ls /dev/serial/by-id/usb-katapult*)
-sudo -E $HOME/klippy-env/bin/python $HOME/klipper/lib/canboot/flash_can.py -f $HOME/cartographer-klipper/firmware/v2-v3/survey/5.1.0/Survey_Cartographer_K1_USB_8kib_offset.bin -d $CATAPULT_DEV
-```
 
 Вы должны увидеть следующий вывод:
 
 ```
+Connecting to Serial Device /dev/serial/by-id/usb-katapult_stm32f042x6_2F003D001653584833373720-if00, baud 250000
+Detected USB device running Katapult
 Attempting to connect to bootloader
-CanBoot Connected
+Katapult Connected
+Software Version: ?
 Protocol Version: 1.0.0
 Block Size: 64 bytes
 Application Start: 0x8002000
 MCU type: stm32f042x6
-Flashing '/home/ubuntu/cartographer-klipper/firmware/v2-v3/survey/5.1.0/Survey_Cartographer_K1_USB_8kib_offset.bin'...
+Flashing '/home/ujif8/cartographer-klipper/firmware/v2-v3/survey/5.1.0/Survey_Cartographer_K1_USB_8kib_offset.bin'...
 
 [##################################################]
 
 Write complete: 22 pages
-Verifying (block count = 338)...
+Verifying (block count = 351)...
 
 [##################################################]
 
-Verification Complete: SHA = BB45B9575AC57FFF03CA5FE09186DB479E09BF53
-CAN Flash Success
+Verification Complete: SHA = E0F7104BECCF44EDBB9346C237C28A42AF072BEC
+Programming Complete
+
 ```
 
 
-Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/)
+Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/) 
 
