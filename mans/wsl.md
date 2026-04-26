@@ -80,12 +80,12 @@ usbipd bind --busid 1-2
 
 ```
 BUSID  VID:PID    DEVICE
-1-4    1d50:614e  Cartographer
+1-2    1d50:614e  Cartographer
 ```
-то вписываем 1-4 в команде. **Внимание номер должен быть ваш а не из примера!**
+то вписываем 1-2 в команде. **Внимание номер должен быть ваш а не из примера!**
 
 ```
-usbipd wsl attach --busid 1-4 --auto-attach
+usbipd wsl attach --busid 1-2 --auto-attach
 ```
 
 *не забываем заменить `<busid>` на свое значение*
