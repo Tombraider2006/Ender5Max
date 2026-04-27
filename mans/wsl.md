@@ -85,7 +85,7 @@ BUSID  VID:PID    DEVICE
 то вписываем 1-2 в команде. **Внимание номер должен быть ваш а не из примера!**
 
 ```
-usbipd wsl attach --busid 1-2 --auto-attach
+usbipd attach --wsl --busid 1-2 --auto-attach
 ```
 
 *не забываем заменить `<busid>` на свое значение*
@@ -104,7 +104,7 @@ wsl.exe -d Ubuntu-24.04
 и повторяем попытку запуска в предыдущем окне
 
 ```
-usbipd wsl attach --busid <ваш номер> --auto-attach
+usbipd attach --wsl --busid <ваш номер> --auto-attach
 ```
 
 *не забываем заменить `<ваш номер>` на свое значение*
