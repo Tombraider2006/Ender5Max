@@ -223,5 +223,5 @@ Programming Complete
 
 ![](/images/complete.jpg)
 
-Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_flashing/) 
+Подробнее можно [прочитать тут](https://pellcorp.github.io/creality-wiki/cartographer_V3_flashing/) 
 
