@@ -71,6 +71,7 @@ switch_pin: ^!PC6
 detection_length: 5.3 # возможно сделать чуть меньше 2.7 по умолчанию
 extruder: extruder
 runout_gcode:
+  _ON_FILAMENT_RUNOUT # для симпл аф!!!!
   RESPOND TYPE=command MSG="Filament runout/blocked!"
   UPDATE_DELAYED_GCODE ID=sfs_alarm DURATION=1
 insert_gcode:
@@ -138,6 +139,7 @@ switch_pin: ^!PC6
 detection_length: 5.3
 extruder: extruder
 runout_gcode:
+  _ON_FILAMENT_RUNOUT # для симпл аф!!!!
   RESPOND TYPE=command MSG="Filament runout/blocked!"
   UPDATE_DELAYED_GCODE ID=sfs_alarm DURATION=1
 insert_gcode:
