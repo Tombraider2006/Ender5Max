@@ -78,9 +78,14 @@ gcode:
     G28
     G0 Z400 F1300
     SET_KINEMATIC_POSITION Z=370 
-    G0 Z400 F400
+    {% set driver_config = printer.configfile.settings['tmc2209 stepper_z'] %}
+    {% set RUN_CUR = driver_config.run_current|float %}
+    {% set HOME_CUR = 0.45 %}
+    SET_TMC_CURRENT STEPPER=stepper_z CURRENT={HOME_CUR}
+    G0 Z400 F600
     SET_KINEMATIC_POSITION Z=390
     G0 Z400 F300
+    SET_TMC_CURRENT STEPPER=stepper_z CURRENT={RUN_CUR}
     G0 Z20 F1300
     G28 Z
 ```
